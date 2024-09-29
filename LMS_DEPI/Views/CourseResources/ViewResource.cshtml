@@ -8,14 +8,34 @@
 
 @if (Model.ResourceType == "PDF")
 {
-    <embed src="@Url.Content(Model.FilePath)" width="100%" height="600px" type="application/pdf" />
+    <embed src="@Model.FilePath" width="100%" height="600px" type="application/pdf" />
 }
+
 else if (Model.ResourceType == "Video")
 {
-    <video width="100%" controls>
-        <source src="@Url.Content(Model.FilePath)" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    if (Model.FilePath.Contains("youtube.com") || Model.FilePath.Contains("youtu.be"))
+    {
+        // Extract the video ID from the URL for YouTube
+        var videoId = string.Empty;
+        if (Model.FilePath.Contains("watch?v="))
+        {
+            videoId = Model.FilePath.Split(new[] { "watch?v=" }, StringSplitOptions.None)[1].Split('&')[0];
+        }
+        else if (Model.FilePath.Contains("youtu.be/"))
+        {
+            videoId = Model.FilePath.Split(new[] { "youtu.be/" }, StringSplitOptions.None)[1].Split('?')[0];
+        }
+
+        // Embed the YouTube video using an iframe
+        <iframe width="100%" height="800" src="https://www.youtube.com/embed/@videoId" frameborder="0" allowfullscreen></iframe>
+    }
+    else
+    {
+        <video width="100%" controls>
+            <source src="@Url.Content(Model.FilePath)" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    }
 }
 else
 {
