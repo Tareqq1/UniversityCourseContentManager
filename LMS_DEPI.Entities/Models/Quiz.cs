@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 namespace LMS_DEPI.Entities.Models
-    public class Quiz
+{   public class Quiz
     {
         [Key]
         public int Id { get; set; }
