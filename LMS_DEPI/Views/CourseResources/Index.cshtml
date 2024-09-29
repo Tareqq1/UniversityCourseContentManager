@@ -1,0 +1,38 @@
+﻿@model IEnumerable<LMS_DEPI.Entities.Models.CourseResource>
+
+@{
+    ViewData["Title"] = "Course Resources";
+}
+
+<h1>Course Resources</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResourceType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    <a asp-action="ViewResource" asp-route-id="@item.Id">ViewResource</a> <!-- New View button -->
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

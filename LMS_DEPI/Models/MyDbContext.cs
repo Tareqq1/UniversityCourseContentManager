@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using LMS.Models;
 using LMS_DEPI.Entities.Models;
+using LMS_DEPI.Models;
 
 namespace LMS.Data
 {
@@ -18,6 +19,7 @@ namespace LMS.Data
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<CourseResource> CourseResources { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
