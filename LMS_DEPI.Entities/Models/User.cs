@@ -5,16 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace LMS_DEPI.Entities.Models
 {
     public class User
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Username is required")]
         public string Username { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Password is required")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+
         public string Role { get; set; }
     }
 }
