@@ -2,8 +2,8 @@
 using LMS_DEPI.APP.ViewModels;
 using LMS_DEPI.Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace LMS_DEPI.APP.Controllers
 {
@@ -16,72 +16,71 @@ namespace LMS_DEPI.APP.Controllers
             _context = context;
         }
 
-        // GET: Auth/Register
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        // POST: Auth/Register
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Check if username is taken
+                // Check if the username already exists
                 if (_context.Users.Any(u => u.Username == model.Username))
                 {
-                    ModelState.AddModelError("", "Username is already taken");
-                    return View(model);
+                    ModelState.AddModelError("Username", "Username is already taken.");
+                    return View(model); // Return view with validation error
                 }
 
-                // Create a new user and add it to the database
-                var user = new User
+                // Validate password strength
+                if (!IsPasswordStrong(model.Password))
+                {
+                    ModelState.AddModelError("Password", "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.");
+                    return View(model); // Return view with validation error
+                }
+
+                // Hash password (this should be done before saving password to DB)
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+                // Create and save new user
+                var newUser = new User
                 {
                     Username = model.Username,
-                    Password = model.Password, // You should hash the password
+                    Password = hashedPassword, // Save hashed password
                     Role = "User"
                 };
 
-                _context.Users.Add(user);
+                _context.Users.Add(newUser);
                 _context.SaveChanges();
 
-                return RedirectToAction("Login");
+                // Redirect to Login after successful registration
+                return RedirectToAction("Login", "Auth");
             }
 
+            // If model state is not valid, return the view with errors
             return View(model);
         }
 
-        // GET: Auth/Login
+        private bool IsPasswordStrong(string password)
+        {
+            // Example of password strength criteria
+            if (password.Length < 8)
+                return false;
+            if (!password.Any(char.IsDigit))
+                return false;
+            if (!password.Any(char.IsUpper))
+                return false;
+            if (!password.Any(char.IsLower))
+                return false;
+
+            return true;
+        }
         [HttpGet]
         public IActionResult Login()
         {
             return View();
-        }
-
-        // POST: Auth/Login
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = _context.Users.FirstOrDefault(u => u.Username == model.Username && u.Password == model.Password);
-
-                if (user != null)
-                {
-                    // Authenticate and redirect
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid login attempt");
-                }
-            }
-
-            return View(model);
         }
     }
 }
