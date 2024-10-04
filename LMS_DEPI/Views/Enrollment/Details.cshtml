@@ -1,0 +1,57 @@
+﻿@model LMS_DEPI.Entities.Models.Enrollment
+
+@{
+    ViewBag.Title = "Enrollment Details";
+}
+
+<h2>Enrollment Details</h2>
+
+<div>
+    <h4>Enrollment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Course.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnrolledAt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnrolledAt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompletedAt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompletedAt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Grade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Grade)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
