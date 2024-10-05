@@ -44,10 +44,11 @@
                     @Html.DisplayFor(model => item.EndDate)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    |
                     <a asp-action="Delete" asp-route-id="@item.Id">UnEnroll</a> |
                     <a asp-controller="CourseResources" asp-action="Index" asp-route-courseId="@item.Id">Resources</a>
-
+                    <a asp-controller="Enrollment" asp-action="Create" asp-route-courseId="@item.Id">Enroll</a> <!-- Add this line -->
                 </td>
             </tr>
         }

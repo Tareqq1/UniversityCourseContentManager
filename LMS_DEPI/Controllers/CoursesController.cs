@@ -22,14 +22,13 @@ namespace LMS.Controllers
         }
 
         // GET: Courses/Details/5
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var course = await _context.Courses
+                .Include(c => c.Lessons)
+                .Include(c => c.Quizzes)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
-            var course = _context.Courses.Find(id);
             if (course == null)
             {
                 return NotFound();
@@ -37,6 +36,7 @@ namespace LMS.Controllers
 
             return View(course);
         }
+
 
         // GET: Courses/Create
         public IActionResult Create()

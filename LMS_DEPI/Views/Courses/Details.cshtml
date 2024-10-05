@@ -1,0 +1,74 @@
+﻿@model LMS_DEPI.Entities.Models.Course
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h2>@Model.Title</h2>
+
+<p>
+    <strong>Description:</strong> @Model.Description <br />
+    <strong>Start Date:</strong> @Model.StartDate.ToShortDateString() <br />
+    <strong>End Date:</strong> @Model.EndDate.ToShortDateString() <br />
+</p>
+
+<h3>Lessons</h3>
+@if (Model.Lessons != null && Model.Lessons.Any())
+{
+    <ul>
+        @foreach (var lesson in Model.Lessons)
+        {
+            <li>
+                @lesson.Title - @lesson.Description
+                @if (!string.IsNullOrEmpty(lesson.FilePath))
+                {
+                    <a href="@Url.Content(  lesson.FilePath)" target="_blank">Open PDF</a>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No lessons available for this course.</p>
+}
+
+<h3>Quizzes</h3>
+@if (Model.Quizzes != null && Model.Quizzes.Any())
+{
+    <ul>
+        @foreach (var quiz in Model.Quizzes)
+        {
+            <li>@quiz.Title - Due Date: @quiz.DueDate.ToShortDateString()</li>
+            <ul>
+                @if (quiz.Questions != null && quiz.Questions.Any())
+                {
+                    foreach (var question in quiz.Questions)
+                    {
+                        <li>
+                            @question.Text
+                            <ul>
+                                @foreach (var answer in question.Answers)
+                                {
+                                    <li>
+                                        <input type="radio" name="question_@question.Id" value="@answer.Id" /> @answer.Text
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>No questions available for this quiz.</li>
+                }
+            </ul>
+        }
+    </ul>
+}
+else
+{
+    <p>No quizzes available for this course.</p>
+}
+
+<a asp-controller="Enrollment" asp-action="Create" asp-route-courseId="@Model.Id">Enroll</a>

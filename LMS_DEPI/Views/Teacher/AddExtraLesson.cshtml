@@ -1,0 +1,31 @@
+﻿@model LMS_DEPI.Entities.Models.Lesson
+
+<h2>Add Extra Lesson for Course @Model.Course.Title</h2>
+
+<form asp-action="AddExtraLesson" method="post">
+    <input type="hidden" name="CourseId" value="@Model.CourseId" />
+    <div>
+        <label>Title:</label>
+        <input type="text" name="Title" required />
+    </div>
+    <div>
+        <label>Description:</label>
+        <textarea name="Description"></textarea>
+    </div>
+    <div>
+        <label>Release Date:</label>
+        <input type="date" name="ReleaseDate" required />
+    </div>
+    <div>
+        <label>Due Date:</label>
+        <input type="date" name="DueDate" required />
+    </div>
+    <div>
+        <label>File Path:</label>
+        <input type="text" name="FilePath" />
+    </div>
+    <button type="submit">Add Lesson</button>
+</form>
+
+<!-- Back to My Courses Link -->
+<a asp-action="MyCourses">Back to My Courses</a>
