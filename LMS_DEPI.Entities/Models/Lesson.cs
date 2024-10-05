@@ -20,5 +20,6 @@ namespace LMS_DEPI.Entities.Models
         public DateTime ReleaseDate { get; set; }
         public DateTime DueDate { get; set; }
         public ICollection<Quiz> Quizzes { get; set; }
+        public string FilePath { get; set; }  // New property for PDF path
     }
 }
