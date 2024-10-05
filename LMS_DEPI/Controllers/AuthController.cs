@@ -82,5 +82,34 @@ namespace LMS_DEPI.APP.Controllers
         {
             return View();
         }
+        public IActionResult Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _context.Users.SingleOrDefault(u => u.Username == model.Username);
+                if (user != null && user.Password == model.Password) // Direct comparison
+                {
+                    // Set up your session or authentication token here
+                    // Redirect based on user role
+                    if (user.Role == "Admin")
+                    {
+                        return RedirectToAction("AdminDashboard", "Home");
+                    }
+                    else if (user.Role == "Teacher")
+                    {
+                        return RedirectToAction("TeacherDashboard", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Courses");
+                    }
+                }
+                ModelState.AddModelError("", "Invalid username or password.");
+            }
+            return View(model);
+        }
+
+
+
     }
 }

@@ -18,5 +18,7 @@ namespace LMS_DEPI.Entities.Models
         public DateTime EndDate { get; set; }
         public int Credits { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; }
+        public ICollection<Lesson> Lessons { get; set; }
+        public ICollection<Quiz> Quizzes { get; set; }
     }
 }
