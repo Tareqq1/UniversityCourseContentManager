@@ -97,7 +97,8 @@ namespace LMS_DEPI.APP.Controllers
                     }
                     else if (user.Role == "Teacher")
                     {
-                        return RedirectToAction("TeacherDashboard", "Home");
+                        return RedirectToAction("MyCourses", "Teacher");
+
                     }
                     else
                     {

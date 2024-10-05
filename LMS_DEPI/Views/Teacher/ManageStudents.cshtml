@@ -1,0 +1,36 @@
+﻿@using LMS_DEPI.APP.ViewModels
+@model ManageStudentsViewModel
+
+
+<h2>Manage Students for @Model.Course.Title</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Grade</th>
+        </tr>
+    </thead>
+    <tbody>
+        <form asp-action="UpdateGrades" method="post">
+            @foreach (var enrollment in Model.Enrollments)
+            {
+            <tr>
+                <td>@enrollment.Student.Name</td>
+                <td>
+                    <input type="number" name="enrollments[@enrollment.Id].Grade" value="@enrollment.Grade" />
+                    <input type="hidden" name="enrollments[@enrollment.Id].Id" value="@enrollment.Id" />
+                </td>
+            </tr>
+            }
+        <tr>
+            <td colspan="2">
+                <button type="submit">Update Grades</button>
+            </td>
+        </tr>
+        </form>
+    </tbody>
+</table>
+
+<!-- Back to My Courses Link -->
+<a asp-action="MyCourses">Back to My Courses</a>

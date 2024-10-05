@@ -1,0 +1,41 @@
+﻿@model IEnumerable<LMS_DEPI.Entities.Models.Course>
+
+<h2>My Courses</h2>
+
+<form asp-action="MyCourses" method="get">
+    <label for="teacherId">Enter Teacher ID:</label>
+    <input type="text" id="teacherId" name="teacherId" />
+    <button type="submit">Submit</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Course Title</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var course in Model)
+            {
+                <tr>
+                    <td>@course.Title</td>
+                    <td>@course.Description</td>
+                    <td>
+                        <a asp-action="ManageStudents" asp-route-courseId="@course.Id">Manage Students</a>
+                        <a asp-action="AddExtraLesson" asp-route-courseId="@course.Id">Add Extra Lesson</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">No courses available for the provided Teacher ID.</td>
+            </tr>
+        }
+    </tbody>
+</table>
