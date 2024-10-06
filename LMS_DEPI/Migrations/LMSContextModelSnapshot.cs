@@ -94,13 +94,48 @@ namespace LMS_DEPI.APP.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TeacherId");
+
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("LMS_DEPI.Entities.Models.CourseResource", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResourceType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CourseResources");
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Enrollment", b =>
@@ -148,6 +183,10 @@ namespace LMS_DEPI.APP.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
@@ -170,6 +209,9 @@ namespace LMS_DEPI.APP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -185,6 +227,8 @@ namespace LMS_DEPI.APP.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("LessonId");
 
@@ -237,36 +281,6 @@ namespace LMS_DEPI.APP.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("LMS_DEPI.Models.CourseResource", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResourceType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("CourseResources");
-                });
-
             modelBuilder.Entity("LMS.Models.Answer", b =>
                 {
                     b.HasOne("LMS.Models.Question", "Question")
@@ -287,6 +301,28 @@ namespace LMS_DEPI.APP.Migrations
                         .IsRequired();
 
                     b.Navigation("Quiz");
+                });
+
+            modelBuilder.Entity("LMS_DEPI.Entities.Models.Course", b =>
+                {
+                    b.HasOne("LMS_DEPI.Entities.Models.User", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("LMS_DEPI.Entities.Models.CourseResource", b =>
+                {
+                    b.HasOne("LMS_DEPI.Entities.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Enrollment", b =>
@@ -311,7 +347,7 @@ namespace LMS_DEPI.APP.Migrations
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Lesson", b =>
                 {
                     b.HasOne("LMS_DEPI.Entities.Models.Course", "Course")
-                        .WithMany()
+                        .WithMany("Lessons")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -321,6 +357,10 @@ namespace LMS_DEPI.APP.Migrations
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Quiz", b =>
                 {
+                    b.HasOne("LMS_DEPI.Entities.Models.Course", null)
+                        .WithMany("Quizzes")
+                        .HasForeignKey("CourseId");
+
                     b.HasOne("LMS_DEPI.Entities.Models.Lesson", "Lesson")
                         .WithMany("Quizzes")
                         .HasForeignKey("LessonId")
@@ -328,17 +368,6 @@ namespace LMS_DEPI.APP.Migrations
                         .IsRequired();
 
                     b.Navigation("Lesson");
-                });
-
-            modelBuilder.Entity("LMS_DEPI.Models.CourseResource", b =>
-                {
-                    b.HasOne("LMS_DEPI.Entities.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("LMS.Models.Question", b =>
@@ -349,6 +378,10 @@ namespace LMS_DEPI.APP.Migrations
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Course", b =>
                 {
                     b.Navigation("Enrollments");
+
+                    b.Navigation("Lessons");
+
+                    b.Navigation("Quizzes");
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Lesson", b =>

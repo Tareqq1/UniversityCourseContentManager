@@ -50,6 +50,12 @@ namespace LMS.Data
                .HasOne(a => a.Question)
                .WithMany(q => q.Answers)
                .HasForeignKey(a => a.QuestionId);
+
+            // Add this part for the Course and User relationship
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.Teacher) // Navigation property
+                .WithMany() // Assuming a Teacher can have many Courses
+                .HasForeignKey(c => c.TeacherId); // Foreign key property
         }
     }
 }
