@@ -9,6 +9,8 @@ namespace LMS.Data
     {
         public LMSContext(DbContextOptions<LMSContext> options) : base(options)
         {
+            //Add-Migration InitialCreate -Context ApplicationDbContext -OutputDir Migrations\SqliteMigrations
+
         }
 
         public DbSet<Course> Courses { get; set; }

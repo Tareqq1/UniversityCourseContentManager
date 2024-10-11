@@ -1,0 +1,133 @@
+﻿@model LMS_DEPI.Models.SettingsViewModel
+
+@{
+    ViewData["Title"] = "Account Settings";
+}
+
+<h2 class="text-center mb-4">Account Settings</h2>
+
+<div class="container">
+    <!-- Change Username Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white collapsible-header">
+                    <h4 class="mb-0">Change Username</h4>
+                </div>
+                <div class="card-body collapsible-body" style="display: none;">
+                    <form asp-action="ChangeUsername" method="post" onsubmit="return confirm('Are you sure you want to change your username?');">
+                        <div class="mb-3">
+                            <label for="newUsername" class="form-label">New Username</label>
+                            <input type="text" class="form-control" id="newUsername" name="newUsername" value="@Model.NewUsername" />
+                            @Html.ValidationMessageFor(m => m.NewUsername, "", new { @class = "text-danger" })
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Change Username</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white collapsible-header">
+                    <h4 class="mb-0">Change Password</h4>
+                </div>
+                <div class="card-body collapsible-body" style="display: none;">
+                    <form asp-action="ChangePassword" method="post" onsubmit="return confirm('Are you sure you want to change your password?');">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" />
+                            @Html.ValidationMessageFor(m => m.CurrentPassword, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" />
+                            @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "text-danger" })
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Change Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Email Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark collapsible-header">
+                    <h4 class="mb-0">Change Email</h4>
+                </div>
+                <div class="card-body collapsible-body" style="display: none;">
+                    <form asp-action="ChangeEmail" method="post" onsubmit="return confirm('Are you sure you want to change your email?');">
+                        <div class="mb-3">
+                            <label for="newEmail" class="form-label">New Email</label>
+                            <input type="email" class="form-control" id="newEmail" name="newEmail" value="@Model.NewEmail" />
+                            @Html.ValidationMessageFor(m => m.NewEmail, "", new { @class = "text-danger" })
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100">Change Email</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Expand on hover
+            $('.collapsible-header').hover(
+                function () {
+                    $(this).siblings('.collapsible-body').stop(true, true).slideDown(200);
+                },
+                function () {
+                    // Delay collapse to check if the input is focused
+                    setTimeout(() => {
+                        if (!$(this).siblings('.collapsible-body').is(':hover') && !$(this).siblings('.collapsible-body').find('input:focus').length) {
+                            $(this).siblings('.collapsible-body').stop(true, true).slideUp(200);
+                        }
+                    }, 200);
+                }
+            );
+
+            // Keep the section open when the body is hovered
+            $('.collapsible-body').hover(
+                function () {
+                    $(this).stop(true, true).slideDown(200); // Keep it open on hover
+                },
+                function () {
+                    // Delay collapse to check if the input is focused
+                    setTimeout(() => {
+                        if (!$(this).is(':hover') && !$(this).find('input:focus').length) {
+                            $(this).stop(true, true).slideUp(200); // Collapse when mouse leaves
+                        }
+                    }, 200);
+                }
+            );
+
+            // Keep section open when input is focused
+            $('input').focus(function () {
+                $(this).closest('.collapsible-body').stop(true, true).slideDown(200);
+            });
+
+            // Collapse section when input loses focus
+            $('input').blur(function () {
+                let body = $(this).closest('.collapsible-body');
+                setTimeout(() => {
+                    if (!body.is(':hover')) {
+                        body.stop(true, true).slideUp(200);
+                    }
+                }, 200);
+            });
+        });
+    </script>
+
+
+}

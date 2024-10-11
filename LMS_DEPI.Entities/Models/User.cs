@@ -21,5 +21,6 @@ namespace LMS_DEPI.Entities.Models
         public string Password { get; set; }
 
         public string Role { get; set; }
+
     }
 }

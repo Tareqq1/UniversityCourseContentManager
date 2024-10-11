@@ -1,12 +1,15 @@
 ﻿using LMS.Data;
 using LMS_DEPI.APP.ViewModels;
 using LMS_DEPI.Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 namespace LMS_DEPI.Controllers
 {
+    [Authorize(Roles = "Teacher")]
+
     public class EnrollmentController : Controller
     {
         private LMSContext _context;
