@@ -1,4 +1,20 @@
-﻿@model LMS_DEPI.Models.SettingsViewModel
+﻿@{
+    var userRole = User.IsInRole("Teacher") ? "Teacher" : User.IsInRole("User") ? "User" : "Guest"; // or any default role
+    if (userRole == "Teacher")
+    {
+        Layout = "~/Views/Shared/TeacherLayout.cshtml";
+    }
+    else if (userRole == "User")
+    {
+        Layout = "~/Views/Shared/StudentLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml"; // Optional default layout for other roles
+    }
+}
+
+@model LMS_DEPI.Models.SettingsViewModel
 
 @{
     ViewData["Title"] = "Account Settings";

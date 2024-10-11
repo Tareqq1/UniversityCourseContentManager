@@ -13,16 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.First().Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.First().Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                @Html.DisplayNameFor(model => model.First().StartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                @Html.DisplayNameFor(model => model.First().EndDate)
+            </th>
+            <th>
+                Teacher
             </th>
             <th></th>
         </tr>
@@ -38,10 +41,13 @@
                     @Html.DisplayFor(model => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.StartDate)
+                    @Html.DisplayFor(model => item.StartDate.ToShortDateString()) <!-- Optional: Format the date -->
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.EndDate)
+                    @Html.DisplayFor(model => item.EndDate.ToShortDateString()) <!-- Optional: Format the date -->
+                </td>
+                <td>
+                    @item.Teacher?.UserName <!-- Display Teacher's username -->
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a>
