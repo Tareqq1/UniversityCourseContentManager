@@ -1,0 +1,61 @@
+﻿@using LMS_DEPI.APP.ViewModels
+@model StudentProfileViewModel
+
+<h2>Welcome, @Model.CustomUser.Username!</h2>
+
+<h3>Your Details:</h3>
+<ul>
+    <li><strong>Username:</strong> @Model.CustomUser.Username</li>
+    <li><strong>Email:</strong> @Model.IdentityUser.Email</li>  <!-- Display email from IdentityUser -->
+    <li><strong>Role:</strong> @Model.CustomUser.Role</li>
+</ul>
+
+<h3>Your Enrolled Courses:</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Course Title</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Lessons</th> <!-- Add a column for Lessons -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var enrollment in Model.EnrolledCourses)
+        {
+            <tr>
+                <td>@enrollment.Course.Title</td>
+                <td>@enrollment.Course.Description</td>
+                <td>@enrollment.Course.StartDate.ToShortDateString()</td>
+                <td>@enrollment.Course.EndDate.ToShortDateString()</td>
+                <td>
+                    @if (enrollment.Course.Lessons != null && enrollment.Course.Lessons.Any())
+                    {
+                        <ul>
+                            @foreach (var lesson in enrollment.Course.Lessons)
+                            {
+                                <li>
+                                    <strong>@lesson.Title</strong> - @lesson.ReleaseDate.ToShortDateString()
+
+                                    @if (!string.IsNullOrEmpty(lesson.FilePath))
+                                    {
+                                        <a href="@Url.Content(lesson.FilePath)" class="btn btn-link" target="_blank">View PDF</a> <!-- Link to PDF -->
+                                    }
+                                    else
+                                    {
+                                        <span>No PDF available</span>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No lessons available.</p>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

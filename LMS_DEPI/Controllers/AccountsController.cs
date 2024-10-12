@@ -1,6 +1,7 @@
 ﻿using LMS.Data;
 using LMS_DEPI.APP.Database;
 using LMS_DEPI.APP.ViewModels;
+using LMS_DEPI.Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,15 @@ namespace LMS_DEPI.APP.Controllers
         private readonly UserManager<UserIdentity> _userManager;
         private readonly ApplicationDbContext _context; // Add the context here
         private readonly SignInManager<UserIdentity> _signInManager;
+        private readonly LMSContext _lmsContext;
 
 
-        public AccountController(UserManager<UserIdentity> userManager, SignInManager<UserIdentity> signInManager, ApplicationDbContext context)
+        public AccountController(UserManager<UserIdentity> userManager, SignInManager<UserIdentity> signInManager, ApplicationDbContext context, LMSContext lmsContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _lmsContext = lmsContext;
         }
 
         public IActionResult AccessDenied()
@@ -51,8 +54,6 @@ namespace LMS_DEPI.APP.Controllers
             return View();
         }
 
-        // Handle user login
-        [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -62,8 +63,22 @@ namespace LMS_DEPI.APP.Controllers
 
                 if (result.Succeeded)
                 {
-                    // On successful login, redirect to the Home/Index page
-                    return RedirectToAction("Index", "Home");
+                    // Find the signed-in user
+                    var user = await _userManager.FindByNameAsync(model.Username);
+
+                    // Check the user's roles and redirect accordingly
+                    if (await _userManager.IsInRoleAsync(user, "Teacher"))
+                    {
+                        return RedirectToAction("Index", "Teacher");
+                    }
+                    else if (await _userManager.IsInRoleAsync(user, "User"))
+                    {
+                        return RedirectToAction("Index", "Student");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home"); // Default fallback
+                    }
                 }
 
                 // If login fails, display an error message
@@ -73,6 +88,7 @@ namespace LMS_DEPI.APP.Controllers
             // Return the view with the model so that errors are shown
             return View(model);
         }
+
 
         [HttpGet]
         public IActionResult DeleteAccount()
@@ -131,51 +147,68 @@ namespace LMS_DEPI.APP.Controllers
         [HttpPost]
         // Handle user registration
         [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            // Check if the model state is valid
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                // Log all validation errors to the console
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                // Step 1: Create the Identity user (UserIdentity)
+                var userIdentity = new UserIdentity { UserName = model.Username, Email = model.Email };
+                var result = await _userManager.CreateAsync(userIdentity, model.Password);
+
+                if (result.Succeeded)
                 {
-                    Console.WriteLine(error.ErrorMessage); // Log to console
+                    // Step 2: Assign roles (Teacher, Admin, or User/Student)
+                    if (model.IsTeacher)
+                    {
+                        await _userManager.AddToRoleAsync(userIdentity, "Teacher");
+                    }
+                    else if (model.IsAdmin)
+                    {
+                        await _userManager.AddToRoleAsync(userIdentity, "Admin");
+                    }
+                    else // If registering as a User (Student)
+                    {
+                        await _userManager.AddToRoleAsync(userIdentity, "User");
+
+                        // Create and save the Student record if the user is a student
+                        var student = new Student
+                        {
+                            Name = model.Username,
+                            Email = model.Email // Assuming you use email for the student
+                        };
+
+                        _lmsContext.Students.Add(student);  // Add to Students table
+                    }
+
+                    // Step 3: Manually create and save the custom user in LMSContext (Users table)
+                    var customUser = new User
+                    {
+                        Username = model.Username,
+                        Password = model.Password,  // Storing plain passwords is not recommended, consider hashing
+                        Role = model.IsTeacher ? "Teacher" : model.IsAdmin ? "Admin" : "User"
+                    };
+
+                    _lmsContext.Users.Add(customUser); // Add to the custom Users table
+                    await _lmsContext.SaveChangesAsync();  // Save to the LMSContext database
+
+                    // Step 4: Sign the user in after registration
+                    await _signInManager.SignInAsync(userIdentity, isPersistent: false);
+
+                    return RedirectToAction("Index", "Home");
                 }
 
-                // Return the view with the model to display errors
-                return View(model);
-            }
-
-            var user = new UserIdentity { UserName = model.Username, Email = model.Email };
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
-            {
-                // Assign the appropriate role based on the checkbox
-                if (model.IsTeacher)
+                // Handle errors if registration failed
+                foreach (var error in result.Errors)
                 {
-                    await _userManager.AddToRoleAsync(user, "Teacher");
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
-                else
-                {
-                    await _userManager.AddToRoleAsync(user, "User");
-                }
-
-                // Sign the user in after registration
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Home");
             }
 
-            // Handle errors and add them to the model state
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-                Console.WriteLine(error.Description); // Log to console or a file
-            }
-
-            // Return the view with the model so that errors are shown
+            // Return the view with the model to display errors
             return View(model);
         }
+
 
 
 
