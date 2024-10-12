@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace LMS_DEPI.APP.Roles
 {
@@ -6,16 +7,17 @@ namespace LMS_DEPI.APP.Roles
     {
         public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
-            string[] roleNames = { "Admin", "User", "Teacher" }; // Define your roles
+            string[] roleNames = { "Admin", "User", "Teacher" };
+
             foreach (var roleName in roleNames)
             {
                 var roleExist = await roleManager.RoleExistsAsync(roleName);
                 if (!roleExist)
                 {
-                    await roleManager.CreateAsync(new IdentityRole(roleName)); // Create role
+                    // Create role if it doesn't exist
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
         }
-
     }
 }

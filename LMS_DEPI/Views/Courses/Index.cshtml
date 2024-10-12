@@ -47,7 +47,6 @@
                     @Html.DisplayFor(model => item.EndDate.ToShortDateString()) <!-- Optional: Format the date -->
                 </td>
                 <td>
-                    @item.Teacher?.UserName <!-- Display Teacher's username -->
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a>
