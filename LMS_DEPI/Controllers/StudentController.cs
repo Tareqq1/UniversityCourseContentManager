@@ -171,7 +171,7 @@ namespace LMS_DEPI.Controllers
                 return NotFound("User not found");
             }
 
-            // Find the custom user in the Users table by Identity Username (not Id)
+            // Find the custom user in the Users table by Identity Id
             var customUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == userIdentity.UserName);
 
             if (customUser == null)
@@ -187,17 +187,18 @@ namespace LMS_DEPI.Controllers
                 return NotFound("Student not found");
             }
 
-            // Get the courses the student is enrolled in using StudentId
+            // Get the courses the student is enrolled in along with the lessons
             var enrolledCourses = await _context.Enrollments
-                .Where(e => e.StudentId == student.Id)  // Use the Student Id from the Students table
+                .Where(e => e.StudentId == student.Id)
                 .Include(e => e.Course)
+                .ThenInclude(c => c.Lessons)  // Include associated lessons
                 .ToListAsync();
 
             // Create the ViewModel
             var viewModel = new StudentProfileViewModel
             {
                 CustomUser = customUser,
-                IdentityUser = userIdentity,  // Use IdentityUser to get email
+                IdentityUser = userIdentity,
                 EnrolledCourses = enrolledCourses
             };
 

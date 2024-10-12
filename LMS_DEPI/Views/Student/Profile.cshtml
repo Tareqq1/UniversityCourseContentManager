@@ -18,6 +18,7 @@
             <th>Description</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Lessons</th> <!-- Add a column for Lessons -->
         </tr>
     </thead>
     <tbody>
@@ -28,6 +29,32 @@
                 <td>@enrollment.Course.Description</td>
                 <td>@enrollment.Course.StartDate.ToShortDateString()</td>
                 <td>@enrollment.Course.EndDate.ToShortDateString()</td>
+                <td>
+                    @if (enrollment.Course.Lessons != null && enrollment.Course.Lessons.Any())
+                    {
+                        <ul>
+                            @foreach (var lesson in enrollment.Course.Lessons)
+                            {
+                                <li>
+                                    <strong>@lesson.Title</strong> - @lesson.ReleaseDate.ToShortDateString()
+
+                                    @if (!string.IsNullOrEmpty(lesson.FilePath))
+                                    {
+                                        <a href="@Url.Content(lesson.FilePath)" class="btn btn-link" target="_blank">View PDF</a> <!-- Link to PDF -->
+                                    }
+                                    else
+                                    {
+                                        <span>No PDF available</span>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No lessons available.</p>
+                    }
+                </td>
             </tr>
         }
     </tbody>
