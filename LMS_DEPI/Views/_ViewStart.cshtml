@@ -1,5 +1,5 @@
 ﻿@{
-    var userRole = User.IsInRole("Teacher") ? "Teacher" : User.IsInRole("User") ? "User" : "Guest"; // or any default role
+    var userRole = User.IsInRole("Teacher") ? "Teacher" : User.IsInRole("User") ? "User" : User.IsInRole("Admin") ? "Admin" : "Guest"; // or any default role
     if (userRole == "Teacher")
     {
         Layout = "~/Views/Shared/TeacherLayout.cshtml";
@@ -7,6 +7,10 @@
     else if (userRole == "User")
     {
         Layout = "~/Views/Shared/StudentLayout.cshtml";
+    }
+    else if (userRole == "Admin")
+    {
+        Layout = "~/Views/Shared/AdminLayout.cshtml";
     }
     else
     {

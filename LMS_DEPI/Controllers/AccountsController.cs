@@ -80,6 +80,8 @@ namespace LMS_DEPI.APP.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAccountConfirmed()
         {
             var user = await _userManager.GetUserAsync(User);
