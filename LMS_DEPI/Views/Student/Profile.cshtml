@@ -1,0 +1,34 @@
+﻿@using LMS_DEPI.APP.ViewModels
+@model StudentProfileViewModel
+
+<h2>Welcome, @Model.CustomUser.Username!</h2>
+
+<h3>Your Details:</h3>
+<ul>
+    <li><strong>Username:</strong> @Model.CustomUser.Username</li>
+    <li><strong>Email:</strong> @Model.IdentityUser.Email</li>  <!-- Display email from IdentityUser -->
+    <li><strong>Role:</strong> @Model.CustomUser.Role</li>
+</ul>
+
+<h3>Your Enrolled Courses:</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Course Title</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var enrollment in Model.EnrolledCourses)
+        {
+            <tr>
+                <td>@enrollment.Course.Title</td>
+                <td>@enrollment.Course.Description</td>
+                <td>@enrollment.Course.StartDate.ToShortDateString()</td>
+                <td>@enrollment.Course.EndDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

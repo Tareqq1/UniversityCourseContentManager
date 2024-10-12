@@ -1,6 +1,61 @@
-﻿@{
-    Layout = "~/Views/Shared/StudentLayout.cshtml";
+﻿@model IEnumerable<LMS_DEPI.Entities.Models.Course>
+
+@{
+    ViewData["Title"] = "Available Courses";
 }
 
 <h2>Welcome, Student!</h2>
-<!-- Add student-specific content here -->
+<a asp-controller="Student" asp-action="Profile" class="btn btn-primary">View Profile</a>
+
+
+<!-- Search and Filter Form -->
+<form asp-action="Index" method="get" class="form-inline mb-3">
+    <!-- Search Input -->
+    <input type="text" name="searchString" class="form-control mr-2" placeholder="Search Courses..." value="@ViewData["CurrentSearch"]" />
+
+    <!-- Filter Dropdown -->
+    <select name="filter" class="form-control mr-2">
+        <option value="">All Credits</option>
+        @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.Filter)
+        {
+            var isSelected = item.Value == ViewData["CurrentFilter"]?.ToString() ? " selected" : "";
+            @Html.Raw($"<option value=\"{item.Value}\"{isSelected}>{item.Text}</option>")
+        }
+    </select>
+
+    <!-- Search and Filter Button -->
+    <button type="submit" class="btn btn-primary mr-2">Search & Filter</button>
+</form>
+
+<!-- Display Courses -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Credits</th>
+            <th>Enroll</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.Description</td>
+                <td>@course.StartDate.ToShortDateString()</td>
+                <td>@course.EndDate.ToShortDateString()</td>
+                <td>@course.Credits</td>
+                <td>
+                    <!-- Enroll Form -->
+                    <form asp-action="Enroll" asp-controller="Student" method="post">
+                        <input type="hidden" name="courseId" value="@course.Id" />
+                        <button type="submit" class="btn btn-success">Enroll</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

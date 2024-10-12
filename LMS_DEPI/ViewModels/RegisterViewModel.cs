@@ -22,6 +22,7 @@ namespace LMS_DEPI.APP.ViewModels
         public string ConfirmPassword { get; set; }
 
         // Add this property
-        public bool IsTeacher { get; set; } // Checkbox to indicate if the user is a teacher
+        public bool IsTeacher { get; set; }
+        public bool IsAdmin { get; set; }// Checkbox to indicate if the user is a teacher
     }
 }

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<LMS_DEPI.Entities.Models.Lesson>
+
+<h2>Lessons for the Course</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Release Date</th>
+            <th>File</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lesson in Model)
+        {
+            <tr>
+                <td>@lesson.Title</td>
+                <td>@lesson.Description</td>
+                <td>@lesson.ReleaseDate.ToShortDateString()</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(lesson.FilePath))
+                    {
+                        <a href="@Url.Content(lesson.FilePath)" target="_blank">Download Lesson</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
