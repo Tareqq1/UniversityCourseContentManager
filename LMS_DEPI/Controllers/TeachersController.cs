@@ -90,7 +90,6 @@ namespace LMS_DEPI.APP.Controllers
                 var existingEnrollment = _context.Enrollments.Find(enrollment.Id);
                 if (existingEnrollment != null)
                 {
-                    existingEnrollment.Grade = enrollment.Grade;  // Update the grade
                 }
             }
             _context.SaveChanges();

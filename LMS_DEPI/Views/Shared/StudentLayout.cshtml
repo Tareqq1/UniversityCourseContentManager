@@ -93,9 +93,10 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <a asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
-            <a asp-area="" asp-controller="Student" asp-action="Profile"><i class="fa-solid fa-list"></i> Enrollments</a>
-            <a asp-area="" asp-controller="Student" asp-action="Index"><i class="fas fa-book"></i> Courses</a>
-            <a asp-area="" asp-controller="Settings" asp-action="Index"><i class="fas fa-cog"></i>Account Settings</a>
+            <a asp-area="" asp-controller="Student" asp-action="Profile"><i class="fa-solid fa-user"></i> Profile</a>
+            <a asp-area="" asp-controller="Student" asp-action="Index"><i class="fa-solid fa-list"></i> Enroll Courses</a>
+            <a asp-area="" asp-controller="Student" asp-action="MyCourses"><i class="fas fa-book"></i> My Courses</a>
+            <a asp-area="" asp-controller="Settings" asp-action="Index"><i class="fas fa-cog"></i> Account Settings</a>
             <form asp-controller="Account" asp-action="Logout" method="post">
                 <button type="submit" class="btn btn-link"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </form>

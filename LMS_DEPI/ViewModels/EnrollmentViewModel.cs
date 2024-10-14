@@ -20,7 +20,6 @@ namespace LMS_DEPI.APP.ViewModels
             StudentId = enrollment.StudentId;
             EnrolledAt = enrollment.EnrolledAt;
             CompletedAt = enrollment.CompletedAt;
-            Grade = enrollment.Grade;
         }
     }
 }

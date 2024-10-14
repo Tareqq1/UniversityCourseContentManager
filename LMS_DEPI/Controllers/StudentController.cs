@@ -159,6 +159,43 @@ namespace LMS_DEPI.Controllers
         }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Unenroll(int courseId)
+        {
+            // Get the currently logged-in user from Identity
+            var userIdentity = await _userManager.GetUserAsync(User);
+
+            if (userIdentity == null)
+            {
+                return NotFound("User not found");
+            }
+
+            // Find the student in the Students table by matching the Identity Email
+            var student = await _context.Students.FirstOrDefaultAsync(s => s.Email == userIdentity.Email);
+
+            if (student == null)
+            {
+                return NotFound("Student not found");
+            }
+
+            // Find the enrollment record for the student and the specific course
+            var enrollment = await _context.Enrollments
+                .FirstOrDefaultAsync(e => e.CourseId == courseId && e.StudentId == student.Id);
+
+            if (enrollment == null)
+            {
+                TempData["Message"] = "You are not enrolled in this course.";
+                return RedirectToAction("MyCourses");
+            }
+
+            // Remove the enrollment
+            _context.Enrollments.Remove(enrollment);
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = "You have successfully unenrolled from the course.";
+            return RedirectToAction("MyCourses");  // Redirect to the student's enrolled courses after unenrollment
+        }
 
 
         public async Task<IActionResult> Profile()

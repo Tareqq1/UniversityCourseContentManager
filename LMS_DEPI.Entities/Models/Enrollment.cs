@@ -19,6 +19,5 @@ namespace LMS_DEPI.Entities.Models
         public Student Student { get; set; }
         public DateTime EnrolledAt { get; set; }
         public DateTime CompletedAt { get; set; }
-        public int Grade { get; set; }
     }
 }

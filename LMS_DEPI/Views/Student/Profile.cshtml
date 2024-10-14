@@ -19,6 +19,7 @@
             <th>Start Date</th>
             <th>End Date</th>
             <th>Lessons</th> <!-- Add a column for Lessons -->
+            <th>Actions</th> <!-- New column for Unenroll action -->
         </tr>
     </thead>
     <tbody>
@@ -54,6 +55,16 @@
                     {
                         <p>No lessons available.</p>
                     }
+                </td>
+                <td>
+                    <!-- Unenroll Button -->
+                    <form asp-action="Unenroll" asp-controller="Student" asp-route-courseId="@enrollment.Course.Id" method="post">
+                        @Html.AntiForgeryToken()  <!-- Anti-forgery token for security -->
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to unenroll from this course?');">
+                            Unenroll
+                        </button>
+                    </form>
+
                 </td>
             </tr>
         }

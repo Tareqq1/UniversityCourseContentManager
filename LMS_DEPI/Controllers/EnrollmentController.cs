@@ -66,7 +66,6 @@ namespace LMS_DEPI.Controllers
                     StudentId = model.StudentId,         
                     EnrolledAt = model.EnrolledAt,
                     CompletedAt = model.CompletedAt,
-                    Grade = model.Grade
                 };
 
                 _context.Enrollments.Add(enrollment);
@@ -112,8 +111,6 @@ namespace LMS_DEPI.Controllers
                     enrollment.StudentId = model.StudentId;
                     enrollment.EnrolledAt = model.EnrolledAt;
                     enrollment.CompletedAt = model.CompletedAt;
-                    enrollment.Grade = model.Grade;
-
                     _context.Entry(enrollment).State = EntityState.Modified;
                     _context.SaveChanges();
                     return RedirectToAction("Index");

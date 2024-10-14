@@ -89,8 +89,8 @@ namespace LMS_DEPI.APP.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     EnrolledAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Grade = table.Column<int>(type: "int", nullable: false)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Enrollments", x => new { x.CourseId, x.StudentId });
