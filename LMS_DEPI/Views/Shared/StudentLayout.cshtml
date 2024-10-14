@@ -81,9 +81,9 @@
             </div>
             @if (User.Identity.IsAuthenticated)
             {
-                @if (User.IsInRole("Teacher"))
+                @if (User.IsInRole("User"))
                 {
-                    <h5 class="navbar-brand fredoka">Welcome, Mr @User.Identity.Name!</h5>
+                    <h5 class="navbar-brand fredoka">Student: @User.Identity.Name</h5>
                 }
             }
         </nav>
