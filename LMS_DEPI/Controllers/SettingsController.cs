@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LMS.Data;
+using LMS_DEPI.APP.Database;
+using LMS_DEPI.APP.ViewModels;
+using LMS_DEPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using LMS_DEPI.Entities.Models;
-using LMS_DEPI.Models;
-using LMS_DEPI.APP.Database;
 
 namespace LMS_DEPI.Controllers
 {
@@ -11,17 +13,65 @@ namespace LMS_DEPI.Controllers
     {
         private readonly UserManager<UserIdentity> _userManager;
         private readonly SignInManager<UserIdentity> _signInManager;
+        private readonly ApplicationDbContext _context; // Include if you need database access
 
-        public SettingsController(UserManager<UserIdentity> userManager, SignInManager<UserIdentity> signInManager)
+        public SettingsController(UserManager<UserIdentity> userManager, SignInManager<UserIdentity> signInManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context; // Initialize context if needed
         }
 
         public IActionResult Index()
         {
             var model = new SettingsViewModel();
             return View(model);
+        }
+
+        // New DeleteAccount methods
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult DeleteAccount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAccountConfirmed()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Sign the user out before deleting the account
+            await _signInManager.SignOutAsync();
+
+            // Delete the user account
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("AccountDeleted"); // Redirect to a confirmation page
+            }
+
+            // If there was an error, stay on the same page
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View("DeleteAccount"); // Show the confirmation page again in case of an error
+        }
+
+        [HttpGet]
+        public IActionResult AccountDeleted()
+        {
+            return View();
         }
 
         [HttpPost]
