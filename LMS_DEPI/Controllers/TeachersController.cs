@@ -5,9 +5,12 @@ using LMS_DEPI.APP.ViewModels;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS_DEPI.APP.Controllers
 {
+    [Authorize(Roles = "Teacher")]
+
     public class TeacherController : Controller
     {
         private readonly LMSContext _context;

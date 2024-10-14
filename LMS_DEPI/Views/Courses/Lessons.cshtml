@@ -1,0 +1,41 @@
+﻿@model IEnumerable<LMS_DEPI.Entities.Models.Lesson>
+
+@{
+    ViewData["Title"] = "Lessons for Course ID: " + ViewBag.CourseId;
+}
+
+<div class="container">
+    <h1>Lessons for Course ID: @ViewBag.CourseId</h1>
+
+    <p>
+        <a asp-controller="Lessons" asp-action="Create" asp-route-courseId="@ViewBag.CourseId" class="btn btn-primary">Add New Lesson</a>
+    </p>
+
+
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().Title)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Description)</th>
+                <th>@Html.DisplayNameFor(model => model.First().DueDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().FilePath)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lesson in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(m => lesson.Title)</td>
+                    <td>@Html.DisplayFor(m => lesson.Description)</td>
+                    <td>@Html.DisplayFor(m => lesson.DueDate)</td>
+                    <td>@Html.DisplayFor(m => lesson.FilePath)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@lesson.Id" class="btn btn-secondary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@lesson.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -3,6 +3,7 @@ using LMS.Models;
 using LMS.Data;
 using LMS_DEPI.Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using LMS_DEPI.APP.ViewModels;
 
 namespace LMS.Controllers
 {
@@ -18,8 +19,10 @@ namespace LMS.Controllers
         // GET: Courses
         public IActionResult Index()
         {
-            return View(_context.Courses.ToList());
+            var courses = _context.Courses.ToList(); // Assuming _context is your DbContext
+            return View(courses);
         }
+
 
         // GET: Courses/Details/5
         public async Task<IActionResult> Details(int id)
@@ -41,22 +44,43 @@ namespace LMS.Controllers
         // GET: Courses/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new CourseViewModel
+            {
+                StartDate = DateTime.Now, // Set StartDate to the current date
+                EndDate = DateTime.Now.AddDays(30) // Set EndDate to 30 days from now
+            };
+
+            return View(model);
         }
+
+
 
         // POST: Courses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Title,Description,StartDate,EndDate,Credits")] Course course)
+        public async Task<IActionResult> Create(CourseViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var course = new Course
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    Credits = model.Credits,
+                    TeacherName = User.Identity.Name // Set the TeacherName from the logged-in user
+                };
+
                 _context.Courses.Add(course);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(course);
+
+            return View(model); // Return the view with the invalid model
         }
+
+
 
         // GET: Courses/Edit/5
         public IActionResult Edit(int? id)
@@ -138,6 +162,13 @@ namespace LMS.Controllers
         private bool CourseExists(int id)
         {
             return _context.Courses.Any(e => e.Id == id);
+        }
+        public IActionResult Lessons(int id)
+        {
+            // Retrieve lessons for the given course ID
+            var lessons = _context.Lessons.Where(l => l.CourseId == id).ToList();
+            ViewBag.CourseId = id; // Pass the Course ID to the view
+            return View(lessons); // Return the lessons to the view
         }
     }
 }

@@ -21,7 +21,5 @@ namespace LMS_DEPI.APP.ViewModels
         [Range(0, int.MaxValue, ErrorMessage = "Credits must be a non-negative number.")]
         public int Credits { get; set; }
 
-        public int TeacherId { get; set; }
-
     }
 }

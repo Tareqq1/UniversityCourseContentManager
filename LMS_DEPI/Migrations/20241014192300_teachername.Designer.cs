@@ -4,6 +4,7 @@ using LMS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS_DEPI.APP.Migrations
 {
     [DbContext(typeof(LMSContext))]
-    partial class LMSContextModelSnapshot : ModelSnapshot
+    [Migration("20241014192300_teachername")]
+    partial class teachername
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +47,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers", (string)null);
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("LMS.Models.Question", b =>
@@ -70,7 +73,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("Questions", (string)null);
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Course", b =>
@@ -109,7 +112,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.CourseResource", b =>
@@ -139,7 +142,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("CourseResources", (string)null);
+                    b.ToTable("CourseResources");
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Enrollment", b =>
@@ -166,7 +169,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Enrollments", (string)null);
+                    b.ToTable("Enrollments");
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Lesson", b =>
@@ -202,7 +205,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lessons", (string)null);
+                    b.ToTable("Lessons");
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Quiz", b =>
@@ -236,7 +239,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("Quizzes", (string)null);
+                    b.ToTable("Quizzes");
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Student", b =>
@@ -257,7 +260,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.User", b =>
@@ -282,7 +285,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("LMS.Models.Answer", b =>

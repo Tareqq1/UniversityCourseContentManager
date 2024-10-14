@@ -1,0 +1,32 @@
+﻿@model LMS_DEPI.APP.ViewModels.LessonViewModel
+
+<div class="container">
+    <h1>Add New Lesson for Course ID: @Model.CourseId</h1>
+
+    <form asp-action="Create" method="post">
+        <input type="hidden" name="CourseId" value="@Model.CourseId" />
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Title</label>
+            <input asp-for="Title" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DueDate" class="form-label">Due Date</label>
+            <input asp-for="DueDate" type="date" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="FilePath" class="form-label">File Path</label>
+            <input asp-for="FilePath" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Lesson</button>
+        <a asp-action="Index" asp-controller="Courses" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

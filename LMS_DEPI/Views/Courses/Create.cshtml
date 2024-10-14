@@ -1,4 +1,4 @@
-﻿@model LMS_DEPI.Entities.Models.Course
+﻿@model LMS_DEPI.APP.ViewModels.CourseViewModel
 
 @{
     ViewData["Title"] = "Create Course";
@@ -38,7 +38,6 @@
                 <input asp-for="Credits" class="form-control" type="number" min="0" />
                 <span asp-validation-for="Credits" class="text-danger"></span>
             </div>
-
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Create Course</button>
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
