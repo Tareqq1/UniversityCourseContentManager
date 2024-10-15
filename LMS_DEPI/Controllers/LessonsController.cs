@@ -30,7 +30,6 @@ namespace LMS_DEPI.Controllers
                     Title = l.Title,
                     Description = l.Description,
                     DueDate = l.DueDate,
-                    FilePath = l.FilePath,
                     HasResources = _context.CourseResources.Any(cr => cr.LessonId == l.Id) // Check if there are resources for the lesson
                 })
                 .ToListAsync();
@@ -72,7 +71,6 @@ namespace LMS_DEPI.Controllers
                 Title = lesson.Title,
                 Description = lesson.Description,
                 DueDate = lesson.DueDate,
-                FilePath = lesson.FilePath
             };
 
             return View(lessonViewModel); // Pass the lesson data to the view
@@ -101,7 +99,6 @@ namespace LMS_DEPI.Controllers
                 lesson.Title = model.Title;
                 lesson.Description = model.Description;
                 lesson.DueDate = model.DueDate;
-                lesson.FilePath = model.FilePath;
 
                 try
                 {
@@ -120,7 +117,7 @@ namespace LMS_DEPI.Controllers
                     }
                 }
 
-                return RedirectToAction("Index", new { courseId = model.CourseId });
+                return RedirectToAction("Lessons", "Courses", new { id = model.CourseId });
             }
 
             return View(model); // Return the view with validation errors, if any
@@ -156,7 +153,7 @@ namespace LMS_DEPI.Controllers
             }
 
             // Redirect to the list of lessons for the course
-            return RedirectToAction("Index", new { courseId = lesson.CourseId });
+            return RedirectToAction("Lessons", "Courses", new { id = lesson.CourseId });
         }
 
 
@@ -193,12 +190,11 @@ namespace LMS_DEPI.Controllers
                     Description = model.Description,
                     DueDate = model.DueDate,
                     ReleaseDate = DateTime.Now,
-                    FilePath = model.FilePath
                 };
 
                 _context.Lessons.Add(lesson); // Add lesson to the context
                 await _context.SaveChangesAsync(); // Save changes
-                return RedirectToAction("Index", new { courseId = model.CourseId }); // Redirect to lessons index
+                return RedirectToAction("Lessons", "Courses", new { id = model.CourseId });
             }
 
             return View(model); // Return the view with the invalid model

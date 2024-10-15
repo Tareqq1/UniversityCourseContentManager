@@ -10,9 +10,9 @@ namespace LMS_DEPI.APP.ViewModels
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime DueDate { get; set; }
-        public string FilePath { get; set; }
         public bool HasResources { get; set; } // New property
     }
+
 
 }
 

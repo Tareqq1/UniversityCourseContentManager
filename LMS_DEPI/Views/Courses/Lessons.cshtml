@@ -20,7 +20,6 @@
                 <th>@Html.DisplayNameFor(model => model.First().Title)</th>
                 <th>@Html.DisplayNameFor(model => model.First().Description)</th>
                 <th>@Html.DisplayNameFor(model => model.First().DueDate)</th>
-                <th>@Html.DisplayNameFor(model => model.First().FilePath)</th>
                 <th></th>
             </tr>
         </thead>
@@ -31,7 +30,6 @@
                     <td>@Html.DisplayFor(m => lesson.Title)</td>
                     <td>@Html.DisplayFor(m => lesson.Description)</td>
                     <td>@Html.DisplayFor(m => lesson.DueDate)</td>
-                    <td>@Html.DisplayFor(m => lesson.FilePath)</td>
                     <td>
                         @if (User.IsInRole("Teacher"))
                         {

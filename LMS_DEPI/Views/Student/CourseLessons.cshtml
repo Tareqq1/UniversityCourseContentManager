@@ -27,7 +27,14 @@
                             <td>@lesson.Description</td>
                             <td>@lesson.ReleaseDate.ToShortDateString()</td>
                             <td>
-                                <a asp-action="Index" asp-controller="CourseResources" asp-route-lessonId="@lesson.Id" class="btn btn-primary btn-sm">Go To Resources</a>
+                                <!-- Pass both lessonId and courseId to the action -->
+                                <a asp-action="Index"
+                                   asp-controller="CourseResources"
+                                   asp-route-lessonId="@lesson.Id"
+                                   asp-route-courseId="@lesson.CourseId"
+                                   class="btn btn-primary btn-sm">
+                                    Go To Resources
+                                </a>
                             </td>
                         </tr>
                     }

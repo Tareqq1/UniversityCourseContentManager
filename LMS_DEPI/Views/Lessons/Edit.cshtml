@@ -28,12 +28,6 @@
         <span asp-validation-for="DueDate" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="FilePath" class="control-label">File Path</label>
-        <input asp-for="FilePath" class="form-control" />
-        <span asp-validation-for="FilePath" class="text-danger"></span>
-    </div>
-
     <button type="submit" class="btn btn-primary">Save Changes</button>
     <a asp-action="Index" asp-route-courseId="@Model.CourseId" class="btn btn-secondary">Cancel</a>
 </form>

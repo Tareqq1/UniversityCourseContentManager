@@ -28,6 +28,6 @@ namespace LMS_DEPI.Entities.Models
         public DateTime DueDate { get; set; } // Keep this as required if you want to enforce user input
 
         public ICollection<Quiz> Quizzes { get; set; }
-        public string FilePath { get; set; }  // New property for PDF path
+        public string? FilePath { get; set; }  // New property for PDF path
     }
 }
