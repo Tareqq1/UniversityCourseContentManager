@@ -7,8 +7,7 @@
             <th>Title</th>
             <th>Description</th>
             <th>Release Date</th>
-            <th>PDF</th>
-            <th>Video</th>
+            <th>Resources</th>
         </tr>
     </thead>
     <tbody>
@@ -19,10 +18,7 @@
                 <td>@lesson.Description</td>
                 <td>@lesson.ReleaseDate.ToShortDateString()</td>
                 <td>
-                    @if (!string.IsNullOrEmpty(lesson.FilePath))
-                    {
-                        <a href="@Url.Content(lesson.FilePath)" target="_blank">Download Lesson</a>
-                    }
+                    
                 </td>
             </tr>
         }
