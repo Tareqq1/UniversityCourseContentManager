@@ -4,47 +4,55 @@
     ViewBag.Title = "Enrollment Details";
 }
 
-<h2>Enrollment Details</h2>
+<div class="container">
+    <h2 class="mb-4">Enrollment Details</h2>
 
-<div>
-    <h4>Enrollment</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Course.Title)
-        </dt>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Enrollment</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Course.Title)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Course.Title)
-        </dd>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Course.Title)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Student.Name)
-        </dt>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Student.Name)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Student.Name)
-        </dd>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Student.Name)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EnrolledAt)
-        </dt>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.EnrolledAt)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.EnrolledAt)
-        </dd>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.EnrolledAt)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CompletedAt)
-        </dt>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.CompletedAt)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CompletedAt)
-        </dd>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.CompletedAt)
+                </dd>
 
-    </dl>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" }) |
+             
+                <a class="btn btn-sm btn-secondary" href="/Enrollment/Index">Back to List</a>
+
+            </p>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

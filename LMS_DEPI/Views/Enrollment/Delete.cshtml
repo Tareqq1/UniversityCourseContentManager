@@ -4,53 +4,62 @@
     ViewBag.Title = "Delete Enrollment";
 }
 
-<h2>Delete Enrollment</h2>
+<div class="container">
+    <h2 class="mb-4">Delete Enrollment</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Enrollment</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Course.Title)
-        </dt>
+    <div class="alert alert-danger">
+        <h3>Are you sure you want to delete this?</h3>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Course.Title)
-        </dd>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Enrollment</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Course.Title)
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Student.Name)
-        </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Course.Title)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Student.Name)
-        </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Student.Name)
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EnrolledAt)
-        </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Student.Name)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.EnrolledAt)
-        </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.EnrolledAt)
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CompletedAt)
-        </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.EnrolledAt)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.CompletedAt)
-        </dd>
-    </dl>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.CompletedAt)
+                </dt>
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.CompletedAt)
+                </dd>
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            </dl>
         </div>
-    }
+        <div class="card-footer">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-sm btn-danger" /> |
+                    <a class="btn btn-sm btn-secondary" href="/Enrollment/Index">Back to List</a>
+                </div>
+            }
+        </div>
+    </div>
 </div>
