@@ -7,66 +7,45 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LMS_DEPI.styles.css" asp-append-version="true" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <style>
         .fredoka {
             font-family: "Fredoka", sans-serif;
-            font-weight: 400; /* Adjust this value as needed (300, 400, 500, etc.) */
+            font-weight: 400;
             font-style: normal;
         }
 
         body {
             font-family: Arial, sans-serif;
-        }
-
-        .dashboard {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            width: 250px;
             background-color: #f8f9fa;
-            border-right: 1px solid #ddd;
-            padding: 20px;
         }
 
-            .sidebar a {
-                text-decoration: none;
-                font-size: 1.2em;
-                color: #333;
-                display: block;
-                margin-bottom: 15px;
-            }
-
-                .sidebar a:hover {
-                    background-color: #e9ecef;
-                    padding-left: 5px;
-                    transition: 0.3s;
-                }
-
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-        }
-
-        .navbar {
-            margin-bottom: 20px;
+        .main-content {
+            padding: 60px 15px;
         }
 
         .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
             background-color: #f8f9fa;
             padding: 10px 0;
         }
+
+        .card {
+            margin: 20px 0;
+            height: 100%; /* Ensures uniform height */
+        }
+
+        .navbar-nav .nav-item .nav-link {
+            display: flex; /* Align icon and text in a flex container */
+            align-items: center; /* Center them vertically */
+        }
+
+            .navbar-nav .nav-item .nav-link i {
+                margin-right: 8px; /* Add some space between icon and text */
+            }
     </style>
 </head>
 <body>
@@ -79,54 +58,58 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
-            @if (User.Identity.IsAuthenticated)
-            {
-            @if (User.IsInRole("Teacher"))
-              {
-                    <h5 class="navbar-brand fredoka">Welcome, Mr @User.Identity.Name!</h5>
-                }
-              else
-              {
-                    <h5 class="navbar-brand fredoka">Student : @User.Identity.Name</h5>
-              }
-            }
 
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Index"><i class="fas fa-book"></i> Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register"><i class="fas fa-user-plus"></i> Register</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </header>
 
-    <div class="dashboard">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <a asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
-            <a asp-area="" asp-controller="Courses" asp-action="Index"><i class="fas fa-book"></i> Courses</a>
-            <a asp-area="" asp-controller="Settings" asp-action="Index"><i class="fas fa-cog"></i> Settings</a>
-            <a asp-area="" asp-controller="Enrollment" asp-action="Index"><i class="fas fa-key"></i> Enrollments</a>
-            <a asp-area="" asp-controller="Account" asp-action="Register"><i class="fas fa-user-plus"></i> Register</a>
-            <a asp-area="" asp-controller="Account" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Login</a>
-            @if (User.Identity.IsAuthenticated)
-            {
-                <form asp-controller="Account" asp-action="Logout" method="post">
-                    <button type="submit" class="btn btn-link">Logout</button>
-                </form>
-            }
-
-
-
-        </div>
-
-        <!-- Main Content Area -->
-        <div class="content">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
+    <div class="main-content">
+        <div class="container">
+            @RenderBody() <!-- This is where the content of your views will be injected -->
         </div>
     </div>
 
-    <footer class="footer text-muted text-center">
+    <footer class="bg-light-gray footer text-muted text-center">
         <div class="container">
-            &copy; 2024 - LMS_DEPI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <p>&copy; 2024 EduCube - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="https://github.com" target="_blank" class="btn btn-outline-dark btn-sm me-2">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <a href="https://www.facebook.com" target="_blank" class="btn btn-outline-primary btn-sm me-2">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank" class="btn btn-outline-info btn-sm me-2">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </a>
+                    <a href="https://www.linkedin.com" target="_blank" class="btn btn-outline-secondary btn-sm me-2">
+                        <i class="fab fa-linkedin-in"></i> LinkedIn
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank" class="btn btn-outline-danger btn-sm">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                </div>
+            </div>
         </div>
     </footer>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

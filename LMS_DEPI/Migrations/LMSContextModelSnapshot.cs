@@ -44,7 +44,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answers", (string)null);
                 });
 
             modelBuilder.Entity("LMS.Models.Question", b =>
@@ -70,7 +70,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Course", b =>
@@ -109,7 +109,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.CourseResource", b =>
@@ -144,7 +144,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("CourseResources");
+                    b.ToTable("CourseResources", (string)null);
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Enrollment", b =>
@@ -168,7 +168,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Enrollments");
+                    b.ToTable("Enrollments", (string)null);
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Lesson", b =>
@@ -204,7 +204,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lessons");
+                    b.ToTable("Lessons", (string)null);
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Quiz", b =>
@@ -238,7 +238,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("Quizzes");
+                    b.ToTable("Quizzes", (string)null);
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.Student", b =>
@@ -259,7 +259,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("LMS_DEPI.Entities.Models.User", b =>
@@ -284,7 +284,7 @@ namespace LMS_DEPI.APP.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("LMS.Models.Answer", b =>

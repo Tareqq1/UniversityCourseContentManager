@@ -69,11 +69,11 @@ namespace LMS_DEPI.APP.Controllers
                     // Check the user's roles and redirect accordingly
                     if (await _userManager.IsInRoleAsync(user, "Teacher"))
                     {
-                        return RedirectToAction("Index", "Teacher");
+                        return RedirectToAction("Index", "Home");
                     }
                     else if (await _userManager.IsInRoleAsync(user, "User"))
                     {
-                        return RedirectToAction("Index", "Student");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {

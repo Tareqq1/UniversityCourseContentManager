@@ -9,5 +9,8 @@ namespace LMS_DEPI.APP.ViewModels
         public User CustomUser { get; set; }
         public IdentityUser IdentityUser { get; set; }
         public List<Enrollment> EnrolledCourses { get; set; }
+
+        public bool IsEnrolled { get; set; }
+
     }
 }
