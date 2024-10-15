@@ -1,13 +1,12 @@
 ﻿@model IEnumerable<LMS_DEPI.Entities.Models.Lesson>
 
-<h1>Course : @ViewBag.CourseName</h1>
-<h4>Lessons</h4>
-<table class="table">
+<h2>Lessons for the Course</h2>
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th>Lesson Title</th>
+            <th>Title</th>
             <th>Description</th>
-            <th>Due Date</th>
+            <th>Release Date</th>
             <th>Resources</th>
         </tr>
     </thead>
@@ -17,18 +16,13 @@
             <tr>
                 <td>@lesson.Title</td>
                 <td>@lesson.Description</td>
-                <td>@lesson.DueDate.ToString("MM/dd/yyyy")</td>
+                <td>@lesson.ReleaseDate.ToShortDateString()</td>
                 <td>
-                    @lesson.FilePath
+                    <a asp-action="Index" asp-controller="CourseResources" asp-route-lessonId="@lesson.Id" class="btn btn-primary">View Resources</a>
+                    <!-- Button to create a new resource -->
+                    <a asp-action="Create" asp-controller="CourseResources" asp-route-lessonId="@lesson.Id" class="btn btn-success">Add Resource</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-@if (User.IsInRole("Teacher"))
-{
-    <a asp-controller="Lessons" asp-action="Create" asp-route-courseId="@ViewBag.CourseId" class="btn btn-primary">
-        Add New Lesson
-    </a>
-}

@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using LMS.Models;
 using LMS.Data;
 using LMS_DEPI.Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using LMS_DEPI.APP.ViewModels;
 
 namespace LMS_DEPI.Controllers
 {
+    [Authorize] // Restrict access to authenticated users
     public class CourseResourcesController : Controller
     {
         private readonly LMSContext _context;
@@ -16,32 +19,53 @@ namespace LMS_DEPI.Controllers
         }
 
         // GET: CourseResources
-        public IActionResult Index(int courseId)
+        public IActionResult Index(int lessonId)
         {
-            var course = _context.Courses.Find(courseId);
-            var resources = _context.CourseResources.Where(cr => cr.CourseId == courseId).ToList();
+            var resources = _context.CourseResources.Where(cr => cr.LessonId == lessonId).ToList();
+            ViewBag.LessonId = lessonId; // Pass the lessonId to the view
             return View(resources);
         }
 
         // GET: CourseResources/Create
-        public IActionResult Create(int courseId)
+        public IActionResult Create(int lessonId, int courseId)
         {
-            return View();
+            var viewModel = new CourseResourceViewModel
+            {
+                LessonId = lessonId,
+                CourseId = courseId // Set the CourseId in the ViewModel
+            };
+            return View(viewModel);
         }
 
         // POST: CourseResources/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(int courseId, [Bind("ResourceType,FileName,FilePath")] CourseResource courseResource)
+        public IActionResult Create(CourseResourceViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                courseResource.CourseId = courseId;
+                // Check if the CourseId exists
+                var courseExists = _context.Courses.Any(c => c.Id == viewModel.CourseId);
+                if (!courseExists)
+                {
+                    ModelState.AddModelError("CourseId", "The selected course does not exist.");
+                    return View(viewModel);
+                }
+
+                var courseResource = new CourseResource
+                {
+                    LessonId = viewModel.LessonId,
+                    CourseId = viewModel.CourseId, // Ensure CourseId is set
+                    ResourceType = viewModel.ResourceType,
+                    FileName = viewModel.FileName,
+                    FilePath = viewModel.FilePath
+                };
+
                 _context.CourseResources.Add(courseResource);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index), new { courseId });
+                return RedirectToAction(nameof(Index), new { lessonId = viewModel.LessonId });
             }
-            return View(courseResource);
+            return View(viewModel);
         }
 
         // GET: CourseResources/Delete/5
@@ -55,10 +79,11 @@ namespace LMS_DEPI.Controllers
             return View(courseResource);
         }
 
+        // GET: CourseResources/ViewResource/5
         public IActionResult ViewResource(int id)
         {
             var courseResource = _context.CourseResources.Find(id);
-            if (courseResource.ResourceType == null)
+            if (courseResource == null)
             {
                 return NotFound();
             }
@@ -66,7 +91,6 @@ namespace LMS_DEPI.Controllers
             // Return the view with the course resource details
             return View(courseResource);
         }
-
 
         // POST: CourseResources/Delete/5
         [HttpPost, ActionName("Delete")]

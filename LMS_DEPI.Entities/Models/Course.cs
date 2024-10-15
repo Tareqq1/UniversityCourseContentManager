@@ -20,6 +20,9 @@ namespace LMS_DEPI.Entities.Models
         public ICollection<Enrollment> Enrollments { get; set; }
         public ICollection<Lesson> Lessons { get; set; }
         public ICollection<Quiz> Quizzes { get; set; }
+
+        public virtual ICollection<CourseResource> CourseResources { get; set; }
+
         public int? TeacherId { get; set; } // Foreign key for Teacher/User
         public User Teacher { get; set; }
 

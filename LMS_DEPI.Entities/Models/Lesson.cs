@@ -18,6 +18,8 @@ namespace LMS_DEPI.Entities.Models
 
         public string Description { get; set; }
 
+        public virtual ICollection<CourseResource> CourseResources { get; set; }
+
         public DateTime ReleaseDate { get; set; } = DateTime.Now; // Set default value to now
 
         [Required(ErrorMessage = "Due date is required.")]

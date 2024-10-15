@@ -11,6 +11,10 @@ namespace LMS_DEPI.Entities.Models
         public string ResourceType { get; set; } // e.g. video, document
         public string FileName { get; set; }
         public string FilePath { get; set; }
-        public Course Course { get; set; }
+        public int LessonId { get; set; }
+
+        public virtual Lesson Lesson { get; set; }
+        public virtual Course Course { get; set; } // Ensure this is defined
     }
+
 }

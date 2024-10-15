@@ -1,0 +1,39 @@
+﻿@model LMS_DEPI.APP.ViewModels.CourseResourceViewModel
+
+@{
+    ViewData["Title"] = "Add Course Resource";
+    var lessonId = Model.LessonId; // Get the lessonId from the model
+}
+
+<h2>Add Course Resource</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="LessonId" />
+    <input type="hidden" asp-for="CourseId" />
+
+    <div class="form-group">
+        <label asp-for="ResourceType" class="control-label"></label>
+        <input asp-for="ResourceType" class="form-control" />
+        <span asp-validation-for="ResourceType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FileName" class="control-label"></label>
+        <input asp-for="FileName" class="form-control" />
+        <span asp-validation-for="FileName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FilePath" class="control-label"></label>
+        <input asp-for="FilePath" class="form-control" />
+        <span asp-validation-for="FilePath" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Add Resource</button>
+        <a asp-action="Index" asp-route-lessonId="@lessonId" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

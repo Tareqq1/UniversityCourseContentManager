@@ -33,6 +33,7 @@
                     <td>
                         <a asp-action="Edit" asp-route-id="@lesson.Id" class="btn btn-secondary">Edit</a>
                         <a asp-action="Delete" asp-route-id="@lesson.Id" class="btn btn-danger">Delete</a>
+                        <a asp-action="Index" asp-controller="CourseResources" asp-route-lessonId="@lesson.Id" class="btn btn-primary">View Resources</a>
                     </td>
                 </tr>
             }

@@ -81,20 +81,7 @@ namespace LMS_DEPI.APP.Controllers
         }
 
 
-        // Action to update grades
-        [HttpPost]
-        public IActionResult UpdateGrades(int courseId, List<Enrollment> enrollments)
-        {
-            foreach (var enrollment in enrollments)
-            {
-                var existingEnrollment = _context.Enrollments.Find(enrollment.Id);
-                if (existingEnrollment != null)
-                {
-                }
-            }
-            _context.SaveChanges();
-            return RedirectToAction("ManageStudents", new { courseId });
-        }
+
 
         // Action to add an extra lesson
         public IActionResult AddExtraLesson(int courseId)
