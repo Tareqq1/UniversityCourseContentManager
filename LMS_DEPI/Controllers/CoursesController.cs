@@ -4,6 +4,7 @@ using LMS.Data;
 using LMS_DEPI.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using LMS_DEPI.APP.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS.Controllers
 {
@@ -42,6 +43,7 @@ namespace LMS.Controllers
 
 
         // GET: Courses/Create
+        [Authorize(Roles = "Teacher")]
         public IActionResult Create()
         {
             var model = new CourseViewModel
@@ -58,6 +60,7 @@ namespace LMS.Controllers
         // POST: Courses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Create(CourseViewModel model)
         {
             if (ModelState.IsValid)
@@ -83,6 +86,7 @@ namespace LMS.Controllers
 
 
         // GET: Courses/Edit/5
+        [Authorize(Roles = "Teacher")]
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -101,6 +105,7 @@ namespace LMS.Controllers
         // POST: Courses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public IActionResult Edit(int id, [Bind("Id,Title,Description,StartDate,EndDate,Credits")] Course course)
         {
             if (id != course.Id)
@@ -132,6 +137,7 @@ namespace LMS.Controllers
         }
 
         // GET: Courses/Delete/5
+        [Authorize(Roles = "Teacher")]
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -151,6 +157,7 @@ namespace LMS.Controllers
         // POST: Courses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public IActionResult DeleteConfirmed(int id)
         {
             var course = _context.Courses.Find(id);

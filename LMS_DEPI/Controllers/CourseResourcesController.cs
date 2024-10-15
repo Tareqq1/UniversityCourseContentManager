@@ -19,43 +19,55 @@ namespace LMS_DEPI.Controllers
         }
 
         // GET: CourseResources
-        public IActionResult Index(int lessonId)
+        public IActionResult Index(int courseId, int lessonId)
         {
-            var resources = _context.CourseResources.Where(cr => cr.LessonId == lessonId).ToList();
-            ViewBag.LessonId = lessonId; // Pass the lessonId to the view
+            // Fetch resources where both CourseId and LessonId match
+            var resources = _context.CourseResources
+                                    .Where(cr => cr.CourseId == courseId && cr.LessonId == lessonId)
+                                    .ToList();
+
+            ViewBag.LessonId = lessonId;
+            ViewBag.CourseId = courseId; // Pass CourseId to the view as well
+
             return View(resources);
         }
 
+
         // GET: CourseResources/Create
+        [Authorize(Roles = "Teacher")]
         public IActionResult Create(int lessonId, int courseId)
         {
             var viewModel = new CourseResourceViewModel
             {
                 LessonId = lessonId,
-                CourseId = courseId // Set the CourseId in the ViewModel
+                CourseId = courseId // Pass both LessonId and CourseId to the view
             };
             return View(viewModel);
         }
 
+
         // POST: CourseResources/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public IActionResult Create(CourseResourceViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                // Check if the CourseId exists
+                // Ensure CourseId and LessonId are valid
                 var courseExists = _context.Courses.Any(c => c.Id == viewModel.CourseId);
-                if (!courseExists)
+                var lessonExists = _context.Lessons.Any(l => l.Id == viewModel.LessonId);
+
+                if (!courseExists || !lessonExists)
                 {
-                    ModelState.AddModelError("CourseId", "The selected course does not exist.");
+                    ModelState.AddModelError("", "The selected course or lesson does not exist.");
                     return View(viewModel);
                 }
 
                 var courseResource = new CourseResource
                 {
                     LessonId = viewModel.LessonId,
-                    CourseId = viewModel.CourseId, // Ensure CourseId is set
+                    CourseId = viewModel.CourseId,
                     ResourceType = viewModel.ResourceType,
                     FileName = viewModel.FileName,
                     FilePath = viewModel.FilePath
@@ -63,12 +75,17 @@ namespace LMS_DEPI.Controllers
 
                 _context.CourseResources.Add(courseResource);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index), new { lessonId = viewModel.LessonId });
+
+                // Redirect back to Index with both CourseId and LessonId
+                return RedirectToAction(nameof(Index), new { courseId = viewModel.CourseId, lessonId = viewModel.LessonId });
             }
+
             return View(viewModel);
         }
 
+
         // GET: CourseResources/Delete/5
+        [Authorize(Roles = "Teacher")]
         public IActionResult Delete(int id)
         {
             var courseResource = _context.CourseResources.Find(id);

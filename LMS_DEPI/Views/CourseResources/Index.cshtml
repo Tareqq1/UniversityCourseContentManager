@@ -2,37 +2,36 @@
 
 @{
     ViewData["Title"] = "Course Resources";
+    var courseId = ViewBag.CourseId;
+    var lessonId = ViewBag.LessonId;
 }
 
 <h1>Course Resources</h1>
 
-
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ResourceType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileName)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.First().ResourceType)</th>
+            <th>@Html.DisplayNameFor(model => model.First().FileName)</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>@Html.DisplayFor(modelItem => item.ResourceType)</td>
+                <td>@Html.DisplayFor(modelItem => item.FileName)</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ResourceType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FileName)
-                </td>
-                <td>
-                    <a asp-action="ViewResource" asp-route-id="@item.Id">ViewResource</a> <!-- New View button -->
-
+                    <a asp-action="ViewResource" asp-route-id="@item.Id">View Resource</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-courseId="@courseId" asp-route-lessonId="@lessonId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@if (User.IsInRole("Teacher"))
+{
+    <a asp-action="Create" asp-route-lessonId="@lessonId" asp-route-courseId="@courseId" class="btn btn-primary">Add Resource</a>
+}

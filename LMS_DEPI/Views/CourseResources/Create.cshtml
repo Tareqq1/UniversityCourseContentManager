@@ -2,12 +2,13 @@
 
 @{
     ViewData["Title"] = "Add Course Resource";
-    var lessonId = Model.LessonId; // Get the lessonId from the model
+    var lessonId = Model.LessonId;
+    var courseId = Model.CourseId;
 }
 
 <h2>Add Course Resource</h2>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
+<form asp-action="Create" method="post">
     <input type="hidden" asp-for="LessonId" />
     <input type="hidden" asp-for="CourseId" />
 
@@ -16,11 +17,13 @@
         <input asp-for="ResourceType" class="form-control" />
         <span asp-validation-for="ResourceType" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="FileName" class="control-label"></label>
         <input asp-for="FileName" class="form-control" />
         <span asp-validation-for="FileName" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="FilePath" class="control-label"></label>
         <input asp-for="FilePath" class="form-control" />
@@ -29,11 +32,10 @@
 
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Add Resource</button>
-        <a asp-action="Index" asp-route-lessonId="@lessonId" class="btn btn-secondary">Cancel</a>
+        <a asp-action="Index" asp-route-lessonId="@lessonId" asp-route-courseId="@courseId" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
+
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

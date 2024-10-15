@@ -27,6 +27,7 @@ namespace LMS_DEPI.Controllers
         }
 
         // GET: Enrollment/Details/5
+        [Authorize(Roles = "Teacher")]
         public ActionResult Details(int id)
         {
             var enrollment = _context.Enrollments
@@ -46,6 +47,7 @@ namespace LMS_DEPI.Controllers
         }
 
         // GET: Enrollment/Create
+        [Authorize(Roles = "Teacher")]
         public ActionResult Create()
         {
             ViewBag.CourseId = new SelectList(_context.Courses, "Id", "Title");
@@ -56,6 +58,7 @@ namespace LMS_DEPI.Controllers
         // POST: Enrollment/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public ActionResult Create([Bind] EnrollmentViewModel model)
         {
             if (ModelState.IsValid)
@@ -79,6 +82,8 @@ namespace LMS_DEPI.Controllers
         }
 
         // GET: Enrollment/Edit/5
+        [Authorize(Roles = "Teacher")]
+
         public ActionResult Edit(int id)
         {
             var enrollment = _context.Enrollments
@@ -97,6 +102,7 @@ namespace LMS_DEPI.Controllers
         // POST: Enrollment/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public ActionResult Edit([Bind] EnrollmentViewModel model)
         {
             if (ModelState.IsValid)
@@ -123,6 +129,7 @@ namespace LMS_DEPI.Controllers
 
 
         // GET: Enrollment/Delete/5
+        [Authorize(Roles = "Teacher")]
         public ActionResult Delete(int id)
         {
             var enrollment = _context.Enrollments
@@ -139,6 +146,7 @@ namespace LMS_DEPI.Controllers
         // POST: Enrollment/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public ActionResult DeleteConfirmed(int id)
         {
             var enrollment = _context.Enrollments

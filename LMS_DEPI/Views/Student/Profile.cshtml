@@ -2,6 +2,20 @@
 @model StudentProfileViewModel
 
 <div class="container mt-4">
+    <!-- Student Profile Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Your Details</h4>
+            <ul class="list-unstyled mb-3">
+                <li><strong>Username:</strong> @Model.CustomUser.Username</li>
+                <li><strong>Email:</strong> @Model.IdentityUser.Email</li> <!-- Display email from IdentityUser -->
+                <li><strong>Role:</strong> @Model.CustomUser.Role</li>
+            </ul>
+            <a href="/Settings" class="btn btn-warning">Edit Details</a>
+        </div>
+    </div>
+
+    <!-- Enrolled Courses Section -->
     <h3 class="text-center mb-4">Your Enrolled Courses</h3>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -45,7 +59,13 @@
                                                     </span>
                                                     <span class="d-block" style="font-size: 0.8em; color: gray;">- @lesson.ReleaseDate.ToShortDateString()</span>
                                                 </div>
-                                                <a asp-action="Index" asp-controller="CourseResources" asp-route-lessonId="@lesson.Id" class="btn btn-outline-primary btn-sm ml-2">Go To Resources</a>
+                                                <a asp-action="Index"
+                                                   asp-controller="CourseResources"
+                                                   asp-route-lessonId="@lesson.Id"
+                                                   asp-route-courseId="@enrollment.Course.Id"
+                                                   class="btn btn-outline-primary btn-sm ml-2">
+                                                    Go To Resources
+                                                </a>
                                             </li>
                                         }
                                     </ul>
