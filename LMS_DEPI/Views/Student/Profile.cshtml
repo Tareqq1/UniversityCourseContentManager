@@ -1,72 +1,78 @@
 ﻿@using LMS_DEPI.APP.ViewModels
 @model StudentProfileViewModel
 
-<h2>Welcome, @Model.CustomUser.Username!</h2>
-
-<h3>Your Details:</h3>
-<ul>
-    <li><strong>Username:</strong> @Model.CustomUser.Username</li>
-    <li><strong>Email:</strong> @Model.IdentityUser.Email</li>  <!-- Display email from IdentityUser -->
-    <li><strong>Role:</strong> @Model.CustomUser.Role</li>
-</ul>
-
-<h3>Your Enrolled Courses:</h3>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Course Title</th>
-            <th>Description</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Lessons</th> <!-- Add a column for Lessons -->
-            <th>Actions</th> <!-- New column for Unenroll action -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var enrollment in Model.EnrolledCourses)
-        {
-            <tr>
-                <td>@enrollment.Course.Title</td>
-                <td>@enrollment.Course.Description</td>
-                <td>@enrollment.Course.StartDate.ToShortDateString()</td>
-                <td>@enrollment.Course.EndDate.ToShortDateString()</td>
-                <td>
-                    @if (enrollment.Course.Lessons != null && enrollment.Course.Lessons.Any())
+<div class="container mt-4">
+    <h3 class="text-center mb-4">Your Enrolled Courses</h3>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Course Title</th>
+                    <th>Description</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Lessons</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.EnrolledCourses != null && Model.EnrolledCourses.Any())
+                {
+                    foreach (var enrollment in Model.EnrolledCourses)
                     {
-                        <ul>
-                            @foreach (var lesson in enrollment.Course.Lessons)
-                            {
-                                <li>
-                                    <strong>@lesson.Title</strong> - @lesson.ReleaseDate.ToShortDateString()
-
-                                    @if (!string.IsNullOrEmpty(lesson.FilePath))
-                                    {
-                                        <a href="@Url.Content(lesson.FilePath)" class="btn btn-link" target="_blank">View PDF</a> <!-- Link to PDF -->
-                                    }
-                                    else
-                                    {
-                                        <span>No PDF available</span>
-                                    }
-                                </li>
-                            }
-                        </ul>
+                        <tr>
+                            <td>@enrollment.Course.Title</td>
+                            <td>@enrollment.Course.Description</td>
+                            <td>@enrollment.Course.StartDate.ToShortDateString()</td>
+                            <td>@enrollment.Course.EndDate.ToShortDateString()</td>
+                            <td>
+                                @if (enrollment.Course.Lessons != null && enrollment.Course.Lessons.Any())
+                                {
+                                    <ul class="list-unstyled mb-0">
+                                        @foreach (var lesson in enrollment.Course.Lessons)
+                                        {
+                                            <li class="d-flex justify-content-between align-items-start mb-2">
+                                                <div>
+                                                    <strong>@lesson.Title</strong><br />
+                                                    <span class="text-muted" style="font-size: 0.9em;">
+                                                        @{
+                                                            // Truncate description to 50 characters
+                                                            var description = lesson.Description.Length > 50
+                                                            ? lesson.Description.Substring(0, 50) + "..."
+                                                            : lesson.Description;
+                                                        }
+                                                        @description
+                                                    </span>
+                                                    <span class="d-block" style="font-size: 0.8em; color: gray;">- @lesson.ReleaseDate.ToShortDateString()</span>
+                                                </div>
+                                                <a asp-action="Index" asp-controller="CourseResources" asp-route-lessonId="@lesson.Id" class="btn btn-outline-primary btn-sm ml-2">Go To Resources</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">No lessons available.</p>
+                                }
+                            </td>
+                            <td>
+                                <form asp-action="Unenroll" asp-controller="Student" asp-route-courseId="@enrollment.Course.Id" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to unenroll from this course?');">
+                                        Unenroll
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
                     }
-                    else
-                    {
-                        <p>No lessons available.</p>
-                    }
-                </td>
-                <td>
-                    <!-- Unenroll Button -->
-                    <form asp-action="Unenroll" asp-controller="Student" asp-route-courseId="@enrollment.Course.Id" method="post">
-                        @Html.AntiForgeryToken()  <!-- Anti-forgery token for security -->
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to unenroll from this course?');">
-                            Unenroll
-                        </button>
-                    </form>
-
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center">No enrolled courses found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

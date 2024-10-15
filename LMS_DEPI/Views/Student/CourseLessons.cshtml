@@ -1,26 +1,50 @@
 ﻿@model IEnumerable<LMS_DEPI.Entities.Models.Lesson>
 
-<h2>Lessons for the Course</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Release Date</th>
-            <th>Resources</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var lesson in Model)
-        {
-            <tr>
-                <td>@lesson.Title</td>
-                <td>@lesson.Description</td>
-                <td>@lesson.ReleaseDate.ToShortDateString()</td>
-                <td>
-                    
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Lessons for the Course</h2>
+
+    <div class="mb-3">
+        <button class="btn btn-secondary" onclick="goBack()">Back</button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Release Date</th>
+                    <th>Resources</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var lesson in Model)
+                    {
+                        <tr>
+                            <td>@lesson.Title</td>
+                            <td>@lesson.Description</td>
+                            <td>@lesson.ReleaseDate.ToShortDateString()</td>
+                            <td>
+                                <a asp-action="Index" asp-controller="CourseResources" asp-route-lessonId="@lesson.Id" class="btn btn-primary btn-sm">Go To Resources</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">No lessons available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>

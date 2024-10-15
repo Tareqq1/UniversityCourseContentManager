@@ -10,6 +10,8 @@ namespace LMS_DEPI.APP.ViewModels
         public DateTime EnrolledAt { get; set; }
         public DateTime CompletedAt { get; set; }
         public int Grade { get; set; }
+        public CourseViewModel Course { get; set; }
+        public List<LessonViewModel> Lessons { get; set; }
 
         public EnrollmentViewModel() { }
 
