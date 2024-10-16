@@ -2,8 +2,7 @@
     ViewData["Title"] = "Home";
 }
 
-<h1 class="text-center">Welcome to EduCube</h1>
-<p class="text-center">Your gateway to learning and growing. Join us today!</p>
+
 
 <div class="row">
     @if (!User.Identity.IsAuthenticated) // Check if user is not logged in
@@ -38,6 +37,8 @@
     }
     else if (User.IsInRole("User")) // Check if the user is a regular student
     {
+        <h1 class="text-center">Welcome to EduCube</h1>
+        <p class="text-center">Your gateway to learning and growing. Join us today!</p>
         <div class="col-md-4">
             <div class="card text-center h-100">
                 <div class="card-body d-flex flex-column justify-content-center">
@@ -68,6 +69,8 @@
     }
     else if (User.IsInRole("Teacher")) // Check if the user is a teacher
     {
+        <h1 class="text-center">Welcome to EduCube</h1>
+        <p class="text-center">Your gateway to learning and growing. Join us today!</p>
         <div class="col-md-4">
             <div class="card text-center h-100">
                 <div class="card-body d-flex flex-column justify-content-center">

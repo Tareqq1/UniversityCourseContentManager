@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - EduCube</title>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/o1S0bt3.png" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LMS_DEPI.styles.css" asp-append-version="true" />
@@ -25,15 +26,46 @@
         }
 
         .main-content {
-            padding: 60px 15px;
+            padding: 70px 45px;
         }
 
         .footer {
-            background-color: #f8f9fa;
-            padding: 10px 0;
+            background-color: #f8f9fa; /* Distinctive dark background */
+            color: white;
+            padding: 20px 0; /* Increased padding for better alignment */
+            margin-top: 0px; /* Added margin to give some space */
         }
 
-        .card {
+        .landing {
+            text-align: center;
+            padding: 80px 30px;
+            background-image: url('/assets/development-4536630_1280.png'); /* Reserve place for the background image */
+            background-size: cover; /* Ensures the image covers the entire div */
+            background-position: center; /* Centers the image */
+            color:black; /* Ensures text remains visible over the background */
+            min-height: 100vh; /* Full viewport height */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Vertically centers the content */
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+            .landing h1 {
+                font-size: 2.5rem;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+
+            .landing p {
+                font-size: 1.2rem;
+            }
+
+        .container {
+            min-height: 75vh;
+            padding: 40px 15px
+        }
+            .card {
             margin: 20px 0;
             height: 100%; /* Ensures uniform height */
         }
@@ -62,9 +94,6 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Index"><i class="fas fa-book"></i> Courses</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Login</a>
                     </li>
                     <li class="nav-item">
@@ -76,13 +105,17 @@
     </header>
 
     <div class="main-content">
+        <div class="landing">
+            <h1>Welcome to EduCube</h1>
+            <p>Your personalized learning platform to grow your skills and knowledge.</p>
+        </div>
         <div class="container">
             @RenderBody() <!-- This is where the content of your views will be injected -->
         </div>
     </div>
 
     <footer class="bg-light-gray footer text-muted text-center">
-        <div class="container">
+        <div class="foot-container">
             <div class="row">
                 <div class="col-md-12 mb-3">
                     <p>&copy; 2024 EduCube - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></p>
