@@ -24,10 +24,10 @@
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
         }
-
+/* 
         .main-content {
             padding: 70px 45px;
-        }
+        } */
 
         .footer {
             background-color: #f8f9fa; /* Distinctive dark background */
@@ -37,29 +37,42 @@
         }
 
         .landing {
-            text-align: center;
-            padding: 80px 30px;
-            background-image: url('/assets/development-4536630_1280.png'); /* Reserve place for the background image */
-            background-size: cover; /* Ensures the image covers the entire div */
-            background-position: center; /* Centers the image */
-            color:black; /* Ensures text remains visible over the background */
-            min-height: 100vh; /* Full viewport height */
-            display: flex;
-            justify-content: center;
-            align-items: center; /* Vertically centers the content */
-            flex-direction: column;
-            margin-bottom: 20px;
+            text-align: center; /* Centers the text */
+            padding: 80px 30px; /* Top/bottom and left/right padding */
+            background-image: url('/assets/development-4536630_1280.png'); /* Background image */
+            background-size: cover; /* Cover the entire area */
+            background-position: center; /* Center the background image */
+            color: black; /* Text color */
+            min-height: 90vh; /* Minimum height of 90% of viewport height */
+            max-height: 100vh; /* Maximum height of 100% of viewport height */
+            display: flex; /* Use Flexbox for layout */
+            justify-content: center; /* Center child elements horizontally */
+            align-items: center; /* Center child elements vertically */
+            flex-direction: column; /* Stack children vertically */
+            margin-bottom: 20px; /* Bottom margin */
         }
 
+            .landing .text-container {
+                background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+                padding: 20px; /* Padding inside the container */
+                border-radius: 10px; /* Adds rounded corners */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+                max-width: 600px; /* Limits the text container width */
+                color: #333; /* Text color for better readability */
+            }
+
             .landing h1 {
-                font-size: 2.5rem;
-                font-weight: 600;
-                margin-bottom: 20px;
+                font-size: 2.5rem; /* Font size for the heading */
+                font-weight: 600; /* Font weight for the heading */
+                margin-bottom: 20px; /* Space below the heading */
             }
 
             .landing p {
-                font-size: 1.2rem;
+                font-size: 1.2rem; /* Font size for the paragraph */
             }
+
+
+
 
         .container {
             min-height: 75vh;
@@ -73,6 +86,7 @@
         .navbar-nav .nav-item .nav-link {
             display: flex; /* Align icon and text in a flex container */
             align-items: center; /* Center them vertically */
+            justify-content:space-between;
         }
 
             .navbar-nav .nav-item .nav-link i {
@@ -82,7 +96,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow">
             <img src="https://i.imgur.com/o1S0bt3.png" alt="EduCube Logo" style="width: 50px; height: 50px;" />
             <div class="container-fluid">
                 <a class="navbar-brand fredoka" asp-area="" asp-controller="Home" asp-action="Index">EduCube</a>
@@ -106,8 +120,10 @@
 
     <div class="main-content">
         <div class="landing">
+            <div class="text-container">
             <h1>Welcome to EduCube</h1>
             <p>Your personalized learning platform to grow your skills and knowledge.</p>
+            </div>
         </div>
         <div class="container">
             @RenderBody() <!-- This is where the content of your views will be injected -->
