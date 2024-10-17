@@ -208,14 +208,6 @@ namespace LMS_DEPI.Controllers
                 return NotFound("User not found");
             }
 
-            // Find the custom user in the Users table by Identity Id
-            var customUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == userIdentity.UserName);
-
-            if (customUser == null)
-            {
-                return NotFound("Custom user not found");
-            }
-
             // Find the student in the Students table by matching the Identity Email
             var student = await _context.Students.FirstOrDefaultAsync(s => s.Email == userIdentity.Email);
 
@@ -234,13 +226,14 @@ namespace LMS_DEPI.Controllers
             // Create the ViewModel
             var viewModel = new StudentProfileViewModel
             {
-                CustomUser = customUser,
                 IdentityUser = userIdentity,
                 EnrolledCourses = enrolledCourses
             };
 
             return View(viewModel);
         }
+
+
 
 
 

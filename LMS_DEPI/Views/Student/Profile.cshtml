@@ -7,9 +7,8 @@
         <div class="card-body">
             <h4 class="card-title">Your Details</h4>
             <ul class="list-unstyled mb-3">
-                <li><strong>Username:</strong> @Model.CustomUser.Username</li>
-                <li><strong>Email:</strong> @Model.IdentityUser.Email</li> <!-- Display email from IdentityUser -->
-                <li><strong>Role:</strong> @Model.CustomUser.Role</li>
+                <li><strong>Username:</strong> @Model.IdentityUser.UserName</li> <!-- Directly from IdentityUser -->
+                <li><strong>Email:</strong> @Model.IdentityUser.Email</li> <!-- Directly from IdentityUser -->
             </ul>
             <a href="/Settings" class="btn btn-warning">Edit Details</a>
         </div>
@@ -50,7 +49,6 @@
                                                     <strong>@lesson.Title</strong><br />
                                                     <span class="text-muted" style="font-size: 0.9em;">
                                                         @{
-                                                            // Truncate description to 50 characters
                                                             var description = lesson.Description.Length > 50
                                                             ? lesson.Description.Substring(0, 50) + "..."
                                                             : lesson.Description;

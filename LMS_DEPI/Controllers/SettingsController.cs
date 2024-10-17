@@ -5,6 +5,7 @@ using LMS_DEPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace LMS_DEPI.Controllers
@@ -77,29 +78,58 @@ namespace LMS_DEPI.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeUsername(SettingsViewModel model)
         {
+            // Get the currently logged-in user from ASP.NET Identity
             var user = await _userManager.GetUserAsync(User);
+
             if (user != null && !string.IsNullOrEmpty(model.NewUsername))
             {
+                // Find the corresponding custom user in dbo.Users using Email or old UserName
+                var customUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == user.UserName);
+
+                if (customUser == null)
+                {
+                    // Handle case when custom user is not found
+                    ModelState.AddModelError("", "Custom user not found.");
+                    return View("Index", model);
+                }
+
+                // Update the username in the aspnetusers table (Identity user)
                 user.UserName = model.NewUsername;
                 user.NormalizedUserName = model.NewUsername.ToUpper();
-
                 var result = await _userManager.UpdateAsync(user);
+
                 if (result.Succeeded)
                 {
-                    await _signInManager.RefreshSignInAsync(user); // Refresh sign-in to update session
+                    // Ensure the custom user entity is being tracked
+                    _context.Attach(customUser);
+
+                    // Now, update the username in the custom dbo.Users table
+                    customUser.UserName = model.NewUsername; // Update the custom user username
+                    _context.Entry(customUser).State = EntityState.Modified; // Mark it as modified
+                    await _context.SaveChangesAsync();       // Save changes to dbo.Users
+
+                    // Refresh the sign-in session with the updated username
+                    await _signInManager.RefreshSignInAsync(user);
+
                     TempData["SuccessMessage"] = "Username changed successfully!";
                     return RedirectToAction("Index", "Settings");
                 }
                 else
                 {
+                    // Handle errors from updating the Identity user
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError("NewUsername", error.Description);
                     }
                 }
             }
+
             return View("Index", model);
         }
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> ChangePassword(SettingsViewModel model)

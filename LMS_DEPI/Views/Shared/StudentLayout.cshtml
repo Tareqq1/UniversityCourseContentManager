@@ -32,9 +32,10 @@
         }
 
         .sidebar {
-            width: 430px;
+            width: 300px;
             background-color: #f8f9fa;
             border-right: 1px solid #ddd;
+            border-top: 1px solid #ddd;
             padding: 20px;
         }
 
@@ -68,6 +69,21 @@
             background-color: #f8f9fa;
             padding: 10px 0;
         }
+
+        .logout-button {
+            background-color: #dc3545; /* Bootstrap's danger color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .logout-button:hover {
+                background-color: #c82333; /* Darker shade on hover */
+            }
+
     </style>
 </head>
 <body>
@@ -99,8 +115,9 @@
             <a asp-area="" asp-controller="Student" asp-action="MyCourses"><i class="fas fa-book"></i> My Courses</a>
             <a asp-area="" asp-controller="Settings" asp-action="Index"><i class="fas fa-cog"></i> Account Settings</a>
             <form asp-controller="Account" asp-action="Logout" method="post">
-                <button type="submit" class="btn btn-link"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <button type="submit" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </form>
+
         </div>
 
         <!-- Main Content Area -->
@@ -113,7 +130,7 @@
 
     <footer class="footer text-muted text-center">
         <div class="container">
-            &copy; 2024 - LMS_DEPI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - EduCube 
         </div>
     </footer>
 
