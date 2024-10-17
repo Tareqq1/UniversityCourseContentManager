@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - EduCube</title>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/o1S0bt3.png" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LMS_DEPI.styles.css" asp-append-version="true" />
@@ -23,17 +24,61 @@
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
         }
-
+/* 
         .main-content {
-            padding: 60px 15px;
-        }
+            padding: 70px 45px;
+        } */
 
         .footer {
-            background-color: #f8f9fa;
-            padding: 10px 0;
+            background-color: #f8f9fa; /* Distinctive dark background */
+            color: white;
+            padding: 20px 0; /* Increased padding for better alignment */
+            margin-top: 0px; /* Added margin to give some space */
         }
 
-        .card {
+        .landing {
+            text-align: center; /* Centers the text */
+            padding: 80px 30px; /* Top/bottom and left/right padding */
+            background-image: url('/assets/development-4536630_1280.png'); /* Background image */
+            background-size: cover; /* Cover the entire area */
+            background-position: center; /* Center the background image */
+            color: black; /* Text color */
+            min-height: 90vh; /* Minimum height of 90% of viewport height */
+            max-height: 100vh; /* Maximum height of 100% of viewport height */
+            display: flex; /* Use Flexbox for layout */
+            justify-content: center; /* Center child elements horizontally */
+            align-items: center; /* Center child elements vertically */
+            flex-direction: column; /* Stack children vertically */
+            margin-bottom: 20px; /* Bottom margin */
+        }
+
+            .landing .text-container {
+                background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+                padding: 20px; /* Padding inside the container */
+                border-radius: 10px; /* Adds rounded corners */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+                max-width: 600px; /* Limits the text container width */
+                color: #333; /* Text color for better readability */
+            }
+
+            .landing h1 {
+                font-size: 2.5rem; /* Font size for the heading */
+                font-weight: 600; /* Font weight for the heading */
+                margin-bottom: 20px; /* Space below the heading */
+            }
+
+            .landing p {
+                font-size: 1.2rem; /* Font size for the paragraph */
+            }
+
+
+
+
+        .container {
+            min-height: 75vh;
+            padding: 40px 15px
+        }
+            .card {
             margin: 20px 0;
             height: 100%; /* Ensures uniform height */
         }
@@ -41,6 +86,7 @@
         .navbar-nav .nav-item .nav-link {
             display: flex; /* Align icon and text in a flex container */
             align-items: center; /* Center them vertically */
+            justify-content:space-between;
         }
 
             .navbar-nav .nav-item .nav-link i {
@@ -50,7 +96,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow">
             <img src="https://i.imgur.com/o1S0bt3.png" alt="EduCube Logo" style="width: 50px; height: 50px;" />
             <div class="container-fluid">
                 <a class="navbar-brand fredoka" asp-area="" asp-controller="Home" asp-action="Index">EduCube</a>
@@ -61,9 +107,6 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Index"><i class="fas fa-book"></i> Courses</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Login</a>
                     </li>
@@ -76,13 +119,19 @@
     </header>
 
     <div class="main-content">
+        <div class="landing">
+            <div class="text-container">
+            <h1>Welcome to EduCube</h1>
+            <p>Your personalized learning platform to grow your skills and knowledge.</p>
+            </div>
+        </div>
         <div class="container">
             @RenderBody() <!-- This is where the content of your views will be injected -->
         </div>
     </div>
 
     <footer class="bg-light-gray footer text-muted text-center">
-        <div class="container">
+        <div class="foot-container">
             <div class="row">
                 <div class="col-md-12 mb-3">
                     <p>&copy; 2024 EduCube - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></p>
