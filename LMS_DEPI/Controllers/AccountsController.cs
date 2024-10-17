@@ -141,12 +141,6 @@ namespace LMS_DEPI.APP.Controllers
             return View();
         }
 
-        // Handle user registration
-        [HttpPost]
-        [HttpPost]
-        [HttpPost]
-        // Handle user registration
-        [HttpPost]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {

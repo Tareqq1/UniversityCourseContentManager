@@ -17,7 +17,8 @@ namespace LMS.Controllers
             _context = context;
         }
 
-        // GET: Courses
+        [Authorize(Roles = "Teacher")]
+
         public IActionResult Index()
         {
             var courses = _context.Courses.ToList();

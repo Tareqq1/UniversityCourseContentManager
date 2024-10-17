@@ -8,7 +8,21 @@
                     <h2>Register</h2>
                 </div>
                 <div class="card-body">
-                    <form asp-action="Register" method="post">
+                    <!-- Error Message Display -->
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <strong>There were some problems with your registration:</strong>
+                            <ul>
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <form asp-action="Register" method="post" id="registerForm">
                         <div class="form-group mb-3">
                             <label asp-for="Username" class="form-label"></label>
                             <input asp-for="Username" class="form-control" placeholder="Choose a username" />
@@ -21,13 +35,23 @@
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="Password" class="form-label"></label>
-                            <input asp-for="Password" class="form-control" type="password" placeholder="Choose a password" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <div class="input-group">
+                                <input asp-for="Password" class="form-control" type="password" placeholder="Choose a password" id="password" />
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility('password', this)">
+                                    <i class="bi bi-eye" id="eyeIconPassword"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="ConfirmPassword" class="form-label"></label>
-                            <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Confirm your password" />
-                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            <div class="input-group">
+                                <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Confirm your password" id="confirmPassword" />
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility('confirmPassword', this)">
+                                    <i class="bi bi-eye" id="eyeIconConfirmPassword"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                         </div>
 
                         <div class="form-group mb-3">
@@ -49,12 +73,61 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     <script>
-        window.onload = function () {
-            const element = document.querySelector('#register-section');
-            if (element) {
-                // Smooth scroll to the element without changing the URL
-                element.scrollIntoView({ behavior: 'smooth' });
+        // Toggle password visibility function
+        function togglePasswordVisibility(inputId, button) {
+            const inputField = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+
+            if (inputField.type === "password") {
+                inputField.type = "text";
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                inputField.type = "password";
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
             }
-        };
+        }
+
+        // Custom password validation rule for complexity
+        $.validator.addMethod("passwordComplexity", function (value, element) {
+            // Regular expression for password complexity:
+            // At least 8 characters, one lowercase, one uppercase, one digit, one special character
+            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$!%*?&])[A-Za-z\d$!%*?&]{8,}$/.test(value);
+        }, "Password must contain at least 8 characters, one lowercase, one uppercase, one digit, and one special character.");
+
+        // Apply jQuery unobtrusive validation to the form
+        $(document).ready(function () {
+            $("#registerForm").validate({
+                rules: {
+                    Password: {
+                        required: true,
+                        minlength: 8,
+                        passwordComplexity: true
+                    },
+                    ConfirmPassword: {
+                        required: true,
+                        equalTo: "#password"
+                    }
+                },
+                messages: {
+                    Password: {
+                        required: "Password is required.",
+                        minlength: "Password must be at least 8 characters long."
+                    },
+                    ConfirmPassword: {
+                        required: "Please confirm your password.",
+                        equalTo: "Passwords do not match."
+                    }
+                },
+                errorClass: "text-danger small",
+                highlight: function (element) {
+                    $(element).addClass("is-invalid");
+                },
+                unhighlight: function (element) {
+                    $(element).removeClass("is-invalid").addClass("is-valid");
+                }
+            });
+        });
     </script>
 }
