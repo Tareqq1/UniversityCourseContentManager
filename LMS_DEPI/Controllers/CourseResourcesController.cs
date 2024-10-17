@@ -112,12 +112,21 @@ namespace LMS_DEPI.Controllers
         // POST: CourseResources/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public IActionResult DeleteConfirmed(int id)
         {
             var courseResource = _context.CourseResources.Find(id);
-            _context.CourseResources.Remove(courseResource);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            if (courseResource != null)
+            {
+                _context.CourseResources.Remove(courseResource);
+                _context.SaveChanges();
+
+                // Add a success message
+                TempData["SuccessMessage"] = "Course resource deleted successfully.";
+            }
+
+            return RedirectToAction(nameof(Index), new { courseId = courseResource.CourseId, lessonId = courseResource.LessonId });
         }
+
     }
 }
