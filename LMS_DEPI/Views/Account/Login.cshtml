@@ -1,36 +1,64 @@
-﻿
-@model LMS_DEPI.APP.ViewModels.LoginViewModel
+﻿@model LMS_DEPI.APP.ViewModels.LoginViewModel
 
 <div class="container mt-5" id="login-section">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card">
-                <div class="card-header text-center">
+            <div class="card shadow-lg">
+                <div class="card-header text-center bg-primary text-white">
                     <h2>Login</h2>
                 </div>
                 <div class="card-body">
+                    <!-- Error Message Display -->
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Login failed:</strong>
+                            <ul>
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
                     <form asp-action="Login" method="post">
-                        @Html.AntiForgeryToken() <!-- Anti-forgery token -->
-
-                        <div class="form-group">
-                            <label asp-for="Username"></label>
-                            <input asp-for="Username" class="form-control" />
-                            <span asp-validation-for="Username" class="text-danger"></span>
+                        @Html.AntiForgeryToken() <!-- Anti-forgery token for security -->
+                        <!-- Username Field -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Username" class="form-label">Username</label>
+                            <input asp-for="Username" class="form-control @(!ViewData.ModelState.IsValid ? "is-invalid" : "")" placeholder="Enter your username" />
+                            <span asp-validation-for="Username" class="text-danger small"></span>
                         </div>
 
-                        <div class="form-group">
-                            <label asp-for="Password"></label>
-                            <input asp-for="Password" class="form-control" type="password" /> <!-- Ensure type is password -->
-                            <span asp-validation-for="Password" class="text-danger"></span>
+                        <!-- Password Field -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <input asp-for="Password" class="form-control @(!ViewData.ModelState.IsValid ? "is-invalid" : "")" type="password" placeholder="Enter your password" id="password" />
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility('password', this)">
+                                    <i class="bi bi-eye" id="eyeIconPassword"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
                         </div>
 
-                        <div class="form-group form-check">
-                            <input asp-for="RememberMe" class="form-check-input" />
+                        <!-- Remember Me Field -->
+                        <div class="form-group form-check mb-3">
+                            <input asp-for="RememberMe" class="form-check-input" id="rememberMeCheck" />
                             <label asp-for="RememberMe" class="form-check-label">Remember me?</label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <!-- Login Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        </div>
                     </form>
+
+                    <!-- Optional: Add a link to reset password -->
+                    <div class="text-center mt-3">
+                        <a href="@Url.Action("ForgotPassword", "Account")">Forgot your password?</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,5 +76,21 @@
                 element.scrollIntoView({ behavior: 'smooth' });
             }
         };
+
+        // Toggle password visibility function
+        function togglePasswordVisibility(inputId, button) {
+            const inputField = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+
+            if (inputField.type === "password") {
+                inputField.type = "text";
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                inputField.type = "password";
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        }
     </script>
 }
