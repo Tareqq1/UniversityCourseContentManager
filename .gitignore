@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /LMS_DEPI/appsettings.json
 /.gitignore
+/LMS_DEPI/appsettings.json
