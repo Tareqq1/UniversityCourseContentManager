@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using LMS_DEPI.Entities.Models;
 
 namespace LMS_DEPI.Controllers
 {
@@ -15,12 +16,14 @@ namespace LMS_DEPI.Controllers
         private readonly UserManager<UserIdentity> _userManager;
         private readonly SignInManager<UserIdentity> _signInManager;
         private readonly ApplicationDbContext _context; // Include if you need database access
+        private readonly LMSContext _lmsContext;
 
-        public SettingsController(UserManager<UserIdentity> userManager, SignInManager<UserIdentity> signInManager, ApplicationDbContext context)
+        public SettingsController(UserManager<UserIdentity> userManager, SignInManager<UserIdentity> signInManager, ApplicationDbContext context, LMSContext lmscontext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context; // Initialize context if needed
+            _lmsContext = lmscontext;
         }
 
         public IActionResult Index()
@@ -74,7 +77,6 @@ namespace LMS_DEPI.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> ChangeUsername(SettingsViewModel model)
         {
@@ -83,8 +85,8 @@ namespace LMS_DEPI.Controllers
 
             if (user != null && !string.IsNullOrEmpty(model.NewUsername))
             {
-                // Find the corresponding custom user in dbo.Users using Email or old UserName
-                var customUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == user.UserName);
+                // Find the corresponding custom user in dbo.Users using the email
+                var customUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
 
                 if (customUser == null)
                 {
@@ -103,10 +105,13 @@ namespace LMS_DEPI.Controllers
                     // Ensure the custom user entity is being tracked
                     _context.Attach(customUser);
 
-                    // Now, update the username in the custom dbo.Users table
-                    customUser.UserName = model.NewUsername; // Update the custom user username
-                    _context.Entry(customUser).State = EntityState.Modified; // Mark it as modified
-                    await _context.SaveChangesAsync();       // Save changes to dbo.Users
+                    // Now, update the username (Name) in the custom dbo.Students table
+                    var student = await _lmsContext.Students.FirstOrDefaultAsync(s => s.Email == user.Email); // Find the student by email
+                    if (student != null)
+                    {
+                        student.Name = model.NewUsername; // Update the student's Name
+                        await _lmsContext.SaveChangesAsync(); // Save changes to dbo.Students
+                    }
 
                     // Refresh the sign-in session with the updated username
                     await _signInManager.RefreshSignInAsync(user);
@@ -126,6 +131,7 @@ namespace LMS_DEPI.Controllers
 
             return View("Index", model);
         }
+
 
 
 
@@ -159,26 +165,52 @@ namespace LMS_DEPI.Controllers
         public async Task<IActionResult> ChangeEmail(SettingsViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user != null && !string.IsNullOrEmpty(model.NewEmail))
-            {
-                var token = await _userManager.GenerateChangeEmailTokenAsync(user, model.NewEmail);
-                var result = await _userManager.ChangeEmailAsync(user, model.NewEmail, token);
 
-                if (result.Succeeded)
+            if (user == null || string.IsNullOrEmpty(model.NewEmail))
+            {
+                ModelState.AddModelError("NewEmail", "Invalid user or email cannot be empty.");
+                return View("Index", model);
+            }
+
+            // Check if the new email already exists
+            var studentEmailExists = await _lmsContext.Students.AnyAsync(u => u.Email == model.NewEmail);
+            if (studentEmailExists)
+            {
+                ModelState.AddModelError("NewEmail", "This email is already in use.");
+                return View("Index", model);
+            }
+
+            // Generate email change token and attempt to change the email in the Identity table
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, model.NewEmail);
+            var result = await _userManager.ChangeEmailAsync(user, model.NewEmail, token);
+
+            if (result.Succeeded)
+            {
+                // Find the corresponding student record using the username as the key
+                var student = await _lmsContext.Students.FirstOrDefaultAsync(s => s.Name == user.UserName);
+
+                if (student != null)
                 {
-                    await _signInManager.RefreshSignInAsync(user);
-                    TempData["SuccessMessage"] = "Email changed successfully!";
-                    return RedirectToAction("Index", "Settings");
+                    student.Email = model.NewEmail; // Update the email in the student record
+                    await _lmsContext.SaveChangesAsync(); // Save changes to the Students table
                 }
-                else
+
+                await _signInManager.RefreshSignInAsync(user);
+                TempData["SuccessMessage"] = "Email changed successfully!";
+                return RedirectToAction("Index", "Settings");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("NewEmail", error.Description);
-                    }
+                    ModelState.AddModelError("NewEmail", error.Description);
                 }
             }
+
             return View("Index", model);
         }
+
+
+
     }
 }
