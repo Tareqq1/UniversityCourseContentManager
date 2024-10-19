@@ -39,8 +39,11 @@
                     <td>
                         <div class="btn-group">
                             <a asp-action="Lessons" asp-route-id="@item.Id" class="btn btn-info">Lessons</a>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            @if (User.IsInRole("Teacher"))
+                            {
+                                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>                                
+                            }
                         </div>
                     </td>
                 </tr>

@@ -17,7 +17,6 @@ namespace LMS.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Teacher")]
 
         public IActionResult Index()
         {
